@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2023 at 12:16 AM
+-- Generation Time: Nov 14, 2023 at 12:19 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.2.34
 
@@ -121,7 +121,7 @@ CREATE TABLE `ms_users` (
 --
 
 INSERT INTO `ms_users` (`id`, `nama_user`, `username`, `password`, `id_role`, `keterangan`, `status_aktif`, `user_id_buat`, `user_id_ubah`, `created_at`, `updated_at`, `timestamp`) VALUES
-('234242342333', 'Habib Abdillah', 'operator1', '$2y$10$J/5dpBrApznwXcxTv6.aku0wiwcwLN9L40zgwX43YtG/2t3N3YR1i', '2', '-', '0', '000', '', '2023-10-24', '0000-00-00', '2023-10-23 18:38:41'),
+('234242342333', 'Habib Abdillah', 'operator1', '$2y$10$J/5dpBrApznwXcxTv6.aku0wiwcwLN9L40zgwX43YtG/2t3N3YR1i', '2', '-', '1', '000', '', '2023-10-24', '0000-00-00', '2023-10-23 18:38:41'),
 ('23424234234', 'BIBSSS', 'admin1', '$2y$10$3Vkk4nhaw4RK7EBR0I3CQ.5gEf5PfhusEdxW3Jz38Q6C7zhMpFVy2', '1', '-', '1', '000', '', '2023-10-24', '0000-00-00', '2023-10-23 18:36:28'),
 ('j49PH5IWlLu3f', 'Chika', 'chikaa', '$2y$10$J6p.AuSDj7ifuGiqr00Nvusj6HGQpHtieqI4upVvvW1EJ88ywlPe6', '1', '123', '1', '1', '1', '2023-11-12', '2023-11-12', '2023-11-12 22:48:23');
 
