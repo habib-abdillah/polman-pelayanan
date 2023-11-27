@@ -145,7 +145,7 @@
             </div>
             <form action="<?= base_url('users/edit_user') ?>" method="post" class="row needs-validation" id="editForm" novalidate>
                 <div class="modal-body">
-                    <input type="hide" name="id" id="idedit" hidden>
+                    <input type="text" name="id" id="idedit" hidden>
                     <div class="mb-2 ms-2 me-2">
                         <label for="editNamaUser" class="form-label">Nama User</label>
                         <input type="text" class="form-control" id="editNamaUser" value="" placeholder="Masukan Nama User" name="nama_user" required>

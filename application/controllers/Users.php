@@ -20,7 +20,7 @@ class Users extends CI_Controller
     {
         $data['tittle']     = 'Data Users';
         $data['users']      = M_users::where('username', $this->session->userdata('username'))->get();
-        $data['user']       = M_users::orderBy('created_at','asc')->get();
+        $data['user']       = M_users::orderBy('created_at', 'asc')->get();
         $this->load->view('template/header', $data);
         $this->load->view('form/users', $data);
         $this->load->view('template/footer', $data);
@@ -28,8 +28,8 @@ class Users extends CI_Controller
 
     public function tambah_user()
     {
-    	$m_user = new M_users();
-        $m_user->id = random_string('alnum',13);
+        $m_user = new M_users();
+        $m_user->id = random_string('alnum', 13);
         $m_user->nama_user = $this->input->post('nama_user');
         $m_user->username = $this->input->post('username');
         $m_user->password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
@@ -59,14 +59,14 @@ class Users extends CI_Controller
                 $this->track();
                 redirect('users');
             }
-        } catch(Illuminate\Database\QueryException $e) {
+        } catch (Illuminate\Database\QueryException $e) {
             echo $e->getMessage();
         }
     }
 
     public function edit_user()
     {
-    	$m_user = M_users::find($this->input->post('id'));
+        $m_user = M_users::find($this->input->post('id'));
         $m_user->nama_user = $this->input->post('nama_user');
         $m_user->username = $this->input->post('username');
         $m_user->password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
@@ -95,13 +95,14 @@ class Users extends CI_Controller
                 $this->track();
                 redirect('users');
             }
-        } catch(Illuminate\Database\QueryException $e) {
+        } catch (Illuminate\Database\QueryException $e) {
             echo $e->getMessage();
         }
     }
 
-    public function hapus_user($id){
-        $m_user = M_users::find($id);
+    public function hapus_user($id_user)
+    {
+        $m_user = M_users::find($id_user);
         try {
             if ($m_user->delete()) {
                 $this->session->set_flashdata('message', 'Dihapus');
@@ -122,12 +123,13 @@ class Users extends CI_Controller
                 $this->track();
                 redirect('users');
             }
-        } catch(Illuminate\Database\QueryException $e) {
+        } catch (Illuminate\Database\QueryException $e) {
             echo $e->getMessage();
         }
     }
 
-    public function reset_password(){
+    public function reset_password()
+    {
         $m_user = M_users::find($this->input->post('id'));
         $m_user->password = password_hash($this->input->post('password_baru'), PASSWORD_DEFAULT);
 
@@ -151,20 +153,21 @@ class Users extends CI_Controller
                 $this->track();
                 redirect('users');
             }
-        } catch(Illuminate\Database\QueryException $e) {
+        } catch (Illuminate\Database\QueryException $e) {
             echo $e->getMessage();
         }
     }
 
-    public function track(){
+    public function track()
+    {
         $users = M_users::where('username', $this->session->userdata('username'))->take(1)->get();
         $m_track = new M_track();
-        foreach ($users as $key => $value){
-            $m_track->id                = random_string('alnum',13);
+        foreach ($users as $key => $value) {
+            $m_track->id                = random_string('alnum', 13);
             $m_track->username          = $value->username;
             $m_track->pc_name           = $this->input->ip_address();
             $m_track->activity          = $this->session->userdata('log');
-            $m_track->header_reference  = $value->id_user;
+            $m_track->header_reference  = $value->id;
             $m_track->detail_reference  = $this->session->userdata('detail_log');
         }
 
