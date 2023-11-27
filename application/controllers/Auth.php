@@ -14,7 +14,6 @@ class Auth extends CI_Controller
 
     public function index()
     {
-        $this->load->library('form_validation');
         $this->form_validation->set_rules('username', 'Username', 'trim|required');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
         if ($this->form_validation->run() == false) {
@@ -41,6 +40,7 @@ class Auth extends CI_Controller
                         $data = [
                             'username'      => $value->username,
                             'id_role'       => $value->id_role,
+                            'id_user'       => $value->id_user,
                             'log'           => 'LOGIN USER',
                             'detail_log'    => 'BERHASIL',
                             'logged'        => 'TRUE'
@@ -56,12 +56,14 @@ class Auth extends CI_Controller
                     } else {
                         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">password salah!</div>');
                         $this->session->set_userdata('detail_log', 'GAGAL');
+                        $this->session->set_userdata('log', 'LOGIN USER');
                         $this->track();
                         redirect('auth');
                     }
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">User tidak aktif!</div>');
                     $this->session->set_userdata('detail_log', 'GAGAL');
+                    $this->session->set_userdata('log', 'LOGIN USER');
                     $this->track();
                     redirect('auth');
                 }
@@ -79,16 +81,17 @@ class Auth extends CI_Controller
         redirect('auth');
     }
 
-    public function track(){
+    public function track()
+    {
         $username = $this->input->post('username');
         $users = M_users::where('username', $username)->take(1)->get();
         $m_track = new M_track();
-        foreach ($users as $key => $value){
-            $m_track->id                = random_string('alnum',13);
+        foreach ($users as $key => $value) {
+            $m_track->id                = random_string('alnum', 13);
             $m_track->username          = $value->username;
             $m_track->pc_name           = $this->input->ip_address();
             $m_track->activity          = $this->session->userdata('log');
-            $m_track->header_reference  = $value->id;
+            $m_track->header_reference  = $value->id_user;
             $m_track->detail_reference  = $this->session->userdata('detail_log');
         }
         $m_track->save();

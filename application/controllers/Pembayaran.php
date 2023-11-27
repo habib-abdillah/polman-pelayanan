@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Pelayanan extends CI_Controller
+class Pembayaran extends CI_Controller
 {
 
     public function __construct()
     {
         parent::__construct();
         $this->load->model('m_users');
-        $this->load->model('m_pelayanan');
+        $this->load->model('m_pembayaran');
         $this->load->model('m_track');
         if ($this->session->userdata('logged') != TRUE) {
             $url = base_url('auth');
@@ -18,109 +18,104 @@ class Pelayanan extends CI_Controller
 
     public function index()
     {
-        $data['tittle']     = 'Data Pelayanan';
+        $data['tittle']     = 'Data Pembayaran';
         $data['users']      = M_users::where('username', $this->session->userdata('username'))->get();
-        $data['pelayanan']  = M_pelayanan::orderBy('created_at', 'asc')->get();
+        $data['pembayaran'] = M_pembayaran::orderBy('created_at', 'asc')->get();
         $this->load->view('template/header', $data);
-        $this->load->view('form/pelayanan', $data);
+        $this->load->view('form/pembayaran', $data);
         $this->load->view('template/footer', $data);
     }
 
-    public function tambah_pelayanan()
+    public function tambah_pembayaran()
     {
-        $harga = $this->input->post('harga');
-        $fharga = preg_replace("/[^0-9]/", "", $harga);
-        $m_pelayanan = new M_pelayanan();
-        $m_pelayanan->id = random_string('alnum', 13);
-        $m_pelayanan->kode_pelayanan = $this->input->post('kode_pelayanan');
-        $m_pelayanan->nama_pelayanan = $this->input->post('nama_pelayanan');
-        $m_pelayanan->harga = $fharga;
-        $m_pelayanan->keterangan = $this->input->post('keterangan');
-        $m_pelayanan->status_aktif = "1";
-        $m_pelayanan->user_id_buat = $this->session->userdata('id_role');
-        $m_pelayanan->user_id_ubah = $this->session->userdata('id_role');
+        $m_pembayaran = new M_pembayaran();
+        $m_pembayaran->id = random_string('alnum', 13);
+        $m_pembayaran->jenis_pembayaran = $this->input->post('jenis_pembayaran');
+        $m_pembayaran->keterangan       = $this->input->post('keterangan');
+        $m_pembayaran->status_aktif     = "1";
+        $m_pembayaran->user_id_buat     = $this->session->userdata('id_role');
+        $m_pembayaran->user_id_ubah     = $this->session->userdata('id_role');
 
         try {
-            if ($m_pelayanan->save()) {
+            if ($m_pembayaran->save()) {
                 $this->session->set_flashdata('message', 'Disimpan');
                 $data = [
-                    'log'           => 'INPUT DATA PELAYANAN',
+                    'log'           => 'INPUT DATA PEMBAYARAN',
                     'detail_log'    => 'BERHASIL',
                 ];
                 $this->session->set_userdata($data);
                 $this->track();
-                redirect('pelayanan');
+                redirect('pembayaran');
             } else {
+                $this->session->set_flashdata('message', 'Gagal disimpan');
                 $data = [
-                    'log'           => 'INPUT DATA PELAYANAN',
+                    'log'           => 'INPUT DATA PEMBAYARAN',
                     'detail_log'    => 'GAGAL',
                 ];
                 $this->session->set_userdata($data);
                 $this->track();
-                $this->session->set_flashdata('message', 'Gagal disimpan');
-                redirect('pelayanan');
+                redirect('pembayaran');
             }
         } catch (Illuminate\Database\QueryException $e) {
             echo $e->getMessage();
         }
     }
 
-    public function edit_pelayanan()
+    public function edit_pembayaran()
     {
-        $m_pelayanan = M_pelayanan::find($this->input->post('id'));
-        $m_pelayanan->kode_pelayanan = $this->input->post('kode_pelayanan');
-        $m_pelayanan->nama_pelayanan = $this->input->post('nama_pelayanan');
-        $m_pelayanan->harga = $this->input->post('harga');
-        $m_pelayanan->keterangan = $this->input->post('keterangan');
-        $m_pelayanan->status_aktif = $this->input->post('status_aktif');
-        $m_pelayanan->user_id_ubah = $this->session->userdata('id_role');
+        $m_pembayaran = M_pembayaran::find($this->input->post('id'));
+        $m_pembayaran->jenis_pembayaran = $this->input->post('jenis_pembayaran');
+        $m_pembayaran->keterangan       = $this->input->post('keterangan');
+        $m_pembayaran->status_aktif     = $this->input->post('status_aktif');
+        $m_pembayaran->user_id_ubah     = $this->session->userdata('id_role');
+
         try {
-            if ($m_pelayanan->save()) {
+            if ($m_pembayaran->save()) {
                 $this->session->set_flashdata('message', 'Diedit');
                 $data = [
-                    'log'           => 'EDIT DATA PELAYANAN',
+                    'log'           => 'EDIT DATA PEMBAYARAN',
                     'detail_log'    => 'BERHASIL',
                 ];
                 $this->session->set_userdata($data);
                 $this->track();
-                redirect('pelayanan');
+                redirect('pembayaran');
             } else {
                 $this->session->set_flashdata('message', 'Gagal diedit');
                 $data = [
-                    'log'           => 'EDIT DATA PELAYANAN',
+                    'log'           => 'EDIT DATA PEMBAYARAN',
                     'detail_log'    => 'GAGAL',
                 ];
                 $this->session->set_userdata($data);
                 $this->track();
-                redirect('pelayanan');
+                redirect('pembayaran');
             }
         } catch (Illuminate\Database\QueryException $e) {
             echo $e->getMessage();
         }
     }
 
-    public function hapus_pelayanan($id)
+    public function hapus_pembayaran($id)
     {
-        $m_pelayanan = M_pelayanan::find($id);
+        $m_pembayaran = M_pembayaran::find($id);
         try {
-            if ($m_pelayanan->delete()) {
+            if ($m_pembayaran->delete()) {
                 $this->session->set_flashdata('message', 'Dihapus');
                 $data = [
-                    'log'           => 'HAPUS DATA PELAYANAN',
+                    'log'           => 'HAPUS DATA PEMBAYARAN',
                     'detail_log'    => 'BERHASIL',
                 ];
                 $this->session->set_userdata($data);
                 $this->track();
-                redirect('pelayanan');
+                redirect('pembayaran');
             } else {
                 $this->session->set_flashdata('message', 'Gagal dihapus');
                 $data = [
-                    'log'           => 'HAPUS DATA PELAYANAN',
-                    'detail_log'    => 'GAGAL',
+                    'log'           => 'HAPUS DATA PEMBAYARAN',
+                    'detail_log'    => 'GAGAL   ',
                 ];
                 $this->session->set_userdata($data);
                 $this->track();
-                redirect('pelayanan');
+                redirect('pembayaran');
             }
         } catch (Illuminate\Database\QueryException $e) {
             echo $e->getMessage();

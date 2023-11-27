@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css') ?>">
-    <link rel="stylesheet" href="<?php echo base_url('assets/bootstrap/css/style.css') ?>">
     <title><?= $tittle ?> - Polman Pelayanan</title>
 </head>
 
@@ -30,7 +29,7 @@
                     <div class="col-5">
                         <div class="form-group">
                             <div class="form-floating">
-                                <input type="text" class="form-control shadow" id="InputUser" placeholder="Username" name="username">
+                                <input type="text" class="form-control shadow" id="InputUsername" placeholder="Username" name="username" value="<?= set_value('username'); ?>">
                                 <label for="InputUser">Username</label>
                                 <?= form_error('username', '<small class="text-danger pl-5">', '</small>'); ?>
                             </div>

@@ -127,6 +127,35 @@ class Users extends CI_Controller
         }
     }
 
+    public function reset_password(){
+        $m_user = M_users::find($this->input->post('id'));
+        $m_user->password = password_hash($this->input->post('password_baru'), PASSWORD_DEFAULT);
+
+        try {
+            if ($m_user->save()) {
+                $this->session->set_flashdata('message', 'Dirubah');
+                $data = [
+                    'log'           => 'RUBAH PASSWORD USER',
+                    'detail_log'    => 'BERHASIL',
+                ];
+                $this->session->set_userdata($data);
+                $this->track();
+                redirect('users');
+            } else {
+                $this->session->set_flashdata('message', 'Gagal dirubah');
+                $data = [
+                    'log'           => 'RUBAH PASSWORD USER',
+                    'detail_log'    => 'GAGAL',
+                ];
+                $this->session->set_userdata($data);
+                $this->track();
+                redirect('users');
+            }
+        } catch(Illuminate\Database\QueryException $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public function track(){
         $users = M_users::where('username', $this->session->userdata('username'))->take(1)->get();
         $m_track = new M_track();
@@ -135,7 +164,7 @@ class Users extends CI_Controller
             $m_track->username          = $value->username;
             $m_track->pc_name           = $this->input->ip_address();
             $m_track->activity          = $this->session->userdata('log');
-            $m_track->header_reference  = $value->id;
+            $m_track->header_reference  = $value->id_user;
             $m_track->detail_reference  = $this->session->userdata('detail_log');
         }
 

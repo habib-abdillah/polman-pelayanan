@@ -19,11 +19,42 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
-<script>
-    var table = $('#example').DataTable();
-    new $.fn.dataTable.Responsive(table, {
-        details: false
+<!-- Button Datatable -->
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var table = $('#example').DataTable({
+            responsive: true,
+            // lengthChange: false,
+            buttons: ['copy', 'excel', 'print', 'pdf', 'colvis'],
+            dom: "<'row'<'col-md-3'l><'col-md-6 d-flex justify-content-center'B><'col-md-3'f>>" +
+                "<'row'<'col-lg-12'tr>>" +
+                "<'row'<'col-md-5'i><'col-md-7'p>>"
+        });
+
+        table.buttons().container()
+            .appendTo('#example_wrapper .col-md-6:eq(0)');
+    });
+
+    $('#example1').DataTable({
+        responsive: true,
+        info: false,
+        ordering: false,
+        paging: false
+    });
+    $('#table-transaksi').DataTable({
+        responsive: true,
+        searching: false,
+        info: false,
+        ordering: false,
+        paging: false
     });
 </script>
 <script type="text/javascript">
@@ -52,13 +83,181 @@
     })()
 </script>
 <script>
-    $('#inputModal').on('hidden.bs.modal', function(e) {
+    $("#inputModal").on('hidden.bs.modal', function() {
         $(this).find('#inputForm')[0].reset();
-        $('#inputForm')
-            .removeClass('was-validated')
+        $(this).find('#inputForm').removeClass('was-validated')
+    });
+
+    $("#editModal").on('hidden.bs.modal', function() {
+        $(this).find('#editForm')[0].reset();
+        $(this).find('#editForm').removeClass('was-validated')
+    });
+
+    $("#resetpasswordModal").on('hidden.bs.modal', function() {
+        $(this).find('#resetForm')[0].reset();
+        $(this).find('#resetForm').removeClass('was-validated')
     });
 </script>
-<script src="<?= base_url('assets/sweetalert/sweetalert2.all.min.js')?>"></script>
-<script src="<?= base_url('assets/sweetalert/sweetalert.js')?>"></script>
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '#getdata', function() {
+            var id = $(this).data('id');
+            var nama = $(this).data('nama');
+            var username = $(this).data('username');
+            var role = $(this).data('role');
+            var status = $(this).data('status');
+            var keterangan = $(this).data('keterangan');
+            $('#idedit').val(id);
+            $('#editNamaUser').val(nama);
+            $('#editUsername').val(username);
+            $('#editRole').val(role);
+            $('#editStatusAktif').val(status);
+            $('#editKeterangan').val(keterangan);
+            $('#idreset').val(id);
+            // alert(role);
+        })
+        $(document).on('click', '#editPelanggan', function() {
+            var idPelanggan = $(this).data('id');
+            var nama = $(this).data('nama');
+            var instansi = $(this).data('instansi');
+            var status = $(this).data('status');
+            var keterangan = $(this).data('keterangan');
+            $('#idPelangganEdit').val(idPelanggan);
+            $('#editNamaPelanggan').val(nama);
+            $('#editNamaInstansi').val(instansi);
+            $('#editStatusAktif').val(status);
+            $('#editKeterangan').val(keterangan);
+        })
+        $(document).on('click', '#editPembayaran', function() {
+            var idPembayaran = $(this).data('id');
+            var jenis = $(this).data('jenis');
+            var status = $(this).data('status');
+            var keterangan = $(this).data('keterangan');
+            $('#idPembayaranEdit').val(idPembayaran);
+            $('#editJenisPembayaran').val(jenis);
+            $('#editStatusAktif').val(status);
+            $('#editKeterangan').val(keterangan);
+        })
+    })
+</script>
+<script src="<?= base_url('assets/sweetalert/sweetalert2.all.min.js') ?>"></script>
+<script src="<?= base_url('assets/sweetalert/sweetalert.js') ?>"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#pelayanan').on('change', function() {
+            var idpelayanan = $('#pelayanan option:selected').data('idpelayanan');
+            var kodepelayanan = $('#pelayanan option:selected').data('kodepelayanan');
+            var namapelayanan = $('#pelayanan option:selected').data('namapelayanan');
+            var harga_pelayanan = $('#pelayanan option:selected').data('harga');
+            var quantity = $('#quantity').val();
+            // alert(harga_pelayanan);
+        })
+        $('.add_cart').click(function() {
+            var idpelayanan = $('#pelayanan option:selected').data('idpelayanan');
+            var kodepelayanan = $('#pelayanan option:selected').data('kodepelayanan');
+            var namapelayanan = $('#pelayanan option:selected').data('namapelayanan');
+            var harga_pelayanan = $('#pelayanan option:selected').data('harga');
+            var quantity = $('#quantity').val();
+            $.ajax({
+                url: "<?php echo base_url(); ?>transaksi/add_to_cart",
+                method: "POST",
+                data: {
+                    id_pelayanan: idpelayanan,
+                    kode_pelayanan: kodepelayanan,
+                    nama_pelayanan: namapelayanan,
+                    harga_pelayanan: harga_pelayanan,
+                    quantity: quantity
+                },
+                success: function(data) {
+                    $('#detail_cart').html(data);
+                }
+            });
+        });
+
+        // Load shopping cart
+        $('#detail_cart').load("<?php echo base_url(); ?>transaksi/load_cart");
+
+        //Hapus Item Cart
+        $(document).on('click', '.hapus_cart', function() {
+            var row_id = $(this).attr("id"); //mengambil row_id dari artibut id
+            $.ajax({
+                url: "<?php echo base_url(); ?>transaksi/hapus_cart",
+                method: "POST",
+                data: {
+                    row_id: row_id
+                },
+                success: function(data) {
+                    $('#detail_cart').html(data);
+                    $('#invoice_cart').html(data);
+                }
+            });
+        });
+    })
+</script>
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '.detail-data', function() {
+            var invoice = $(this).data('invoice');
+            var tanggal = $(this).data('created');
+            var waktu = $(this).data('time');
+            $('#kode_invoice').html(invoice);
+            $('#tanggal_invoice').html(tanggal);
+            $('#waktu_invoice').html(waktu);
+            $.ajax({
+                url: "<?php echo base_url(); ?>detailtransaksi/detail_data",
+                method: "POST",
+                data: {
+                    invoice: invoice
+                },
+                success: function(data) {
+                    $("#detail_data").html(data);
+                    $('#detailModal').modal('show');
+                }
+            });
+        })
+        $('.save-data').click(function() {
+            var kode_invoice = $('#kode_invoice').val();
+            var pelanggan = $('#pelanggan').val();
+            var pembayaran = $('#pembayaran').val();
+            $.ajax({
+                url: "<?php echo base_url(); ?>transaksi/tambah_transaksi",
+                method: "POST",
+                data: {
+                    kode_invoice: kode_invoice,
+                    pelanggan: pelanggan,
+                    pembayaran: pembayaran
+                },
+                success: function(data) {
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>transaksi/detail_data",
+                        method: "POST",
+                        data: {
+                            kode_invoice: kode_invoice
+                        },
+                        success: function(data) {
+                            $("#invoice_data").html(data);
+                            $('#invoiceModal').modal('show');
+                        }
+                    });
+                }
+            });
+        });
+        $("#invoiceModal").on('hidden.bs.modal', function() {
+            location.reload();
+        });
+    })
+
+    function printDiv() {
+        var divToPrint = document.getElementById('DivIdToPrint');
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+        newWin.document.close();
+        setTimeout(function() {
+            newWin.close();
+        }, 10);
+    }
+</script>
 </body>
+
 </html>

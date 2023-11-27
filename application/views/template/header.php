@@ -8,11 +8,13 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title><?= $tittle; ?> - Polman</title>
-    <link href="<?= base_url('assets/datatables/datatables.min.css') ?>" rel="stylesheet" />
     <link href="<?= base_url('vendor/sbadmin/') ?>css/styles.css" rel="stylesheet" />
+    <!-- Datatables -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+    <!-- Font Awesome -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -21,9 +23,6 @@
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="index.html">
             <img src="<?php echo base_url('assets/images/polman1.png') ?>" style="width: 120px;" class="ms-2 me-3 icon">
-            <!-- <Strong>
-                <span class="logo_name fs-4 mx-auto" style="color: #004f83;">Polman</span>
-            </Strong> -->
         </a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
@@ -65,7 +64,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-fw fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="<?= base_url('transaksi'); ?>">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-fw fa-pen-to-square"></i></div>
                             Input Data Transaksi
                         </a>
@@ -79,11 +78,13 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="<?= base_url('pelayanan'); ?>">Data Jenis Pelayanan</a>
-                                    <a class="nav-link" href="#">Data Transaksi</a>
                                     <a class="nav-link" href="<?= base_url('users'); ?>">Data User</a>
+                                    <a class="nav-link" href="<?= base_url('pelanggan'); ?>">Data Pelanggan</a>
+                                    <a class="nav-link" href="<?= base_url('pembayaran'); ?>">Data pembayaran</a>
+                                    <a class="nav-link" href="<?= base_url('detailtransaksi'); ?>">Data Transaksi</a>
                                 </nav>
                             </div>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="<?= base_url('laporan'); ?>">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-fw fa-chart-line"></i></div>
                                 Laporan
                             </a>

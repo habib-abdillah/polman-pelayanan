@@ -3,9 +3,11 @@ const flashData = $(".flash-data").data("flashdata");
 
 if (flashData) {
 	Swal.fire({
-		title: "Data",
-		text: "Berhasi " + flashData,
+		position: "top-end",
 		icon: "success",
+		title: "Data Berhasil " + flashData,
+		showConfirmButton: false,
+		timer: 1000,
 	});
 }
 

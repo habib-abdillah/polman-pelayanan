@@ -4,7 +4,7 @@
         <ol class="breadcrumb mb-3 mt-4 ">
             <li class="breadcrumb-item">Admin</li>
             <li class="breadcrumb-item">Dashboard</li>
-            <li class="breadcrumb-item active">Input Pelayanan</li>
+            <li class="breadcrumb-item active">Data Pelayanan</li>
         </ol>
         <div class="col-xl-12 col-lg-12 col-sm-12">
             <div class="card">
@@ -41,7 +41,7 @@
                                     <td><?= $no++ ?></td>
                                     <td><?= $value->kode_pelayanan; ?></td>
                                     <td><?= $value->nama_pelayanan; ?></td>
-                                    <td><?= $value->harga; ?></td>
+                                    <td>Rp. <?= number_format($value->harga); ?></td>
                                     <td>
                                         <?php
                                         if ($value->status_aktif == 1) {
@@ -59,7 +59,7 @@
                                     <td><?= $value->keterangan; ?></td>
                                     <td>
                                         <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<?= $value->id; ?>">Edit</button>
-                                        <a href="<?= base_url('pelayanan/hapus_pelayanan/'.$value->id)?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
+                                        <a href="<?= base_url('pelayanan/hapus_pelayanan/' . $value->id) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -123,70 +123,70 @@
 <!-- Akhir Modal Tambah Data -->
 
 <!-- Modal Edit Data -->
-<?php 
+<?php
 $no = 0;
 foreach ($pelayanan as $value) : $no++; ?>
-<div class="modal fade" id="editModal<?= $value->id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit data pelayanan</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="<?= base_url('pelayanan/edit_pelayanan') ?>" method="post" class="row needs-validation" name="inputPelayanan" id="inputForm" novalidate>
-                <div class="modal-body">
-                    <input type="hidden" name="id" value="<?= $value->id; ?>">
-                    <div class="mb-2 ms-2 me-2">
-                        <label for="formGroupKodePelayanan" class="form-label">Kode Pelayanan</label>
-                        <input type="text" class="form-control" id="formGroupKodePelayanan" placeholder="Masukan Kode Pelayanan" name="kode_pelayanan" value="<?= $value->kode_pelayanan; ?>" required>
-                        <div class="invalid-feedback">
-                            Tolong masukan kode pelayanan.
-                        </div>
-                    </div>
-                    <div class="mb-2 ms-2 me-2">
-                        <label for="formGroupNamaPelayanan" class="form-label">Nama Pelayanan</label>
-                        <input type="text" class="form-control" id="formGroupNamaPelayanan" placeholder="Masukan Nama Pelayanan" name="nama_pelayanan" value="<?= $value->nama_pelayanan; ?>" required>
-                        <div class="invalid-feedback">
-                            Tolong masukan nama pelayanan.
-                        </div>
-                    </div>
-                    <div class="mb-2 ms-2 me-2">
-                        <label for="formGroupNamaharga" class="form-label">Harga</label>
-                        <div class="input-group has-validation">
-                            <span class="input-group-text" id="inputGroupPrepend">Rp</span>
-                            <input type="text" class="uang form-control" id="formGroupNamaharga" aria-describedby="inputGroupPrepend" name="harga" placeholder="Masukan Harga" value="<?= $value->harga; ?>" required>
+    <div class="modal fade" id="editModal<?= $value->id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit data pelayanan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="<?= base_url('pelayanan/edit_pelayanan') ?>" method="post" class="row needs-validation" name="inputPelayanan" id="inputForm" novalidate>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" value="<?= $value->id; ?>">
+                        <div class="mb-2 ms-2 me-2">
+                            <label for="formGroupKodePelayanan" class="form-label">Kode Pelayanan</label>
+                            <input type="text" class="form-control" id="formGroupKodePelayanan" placeholder="Masukan Kode Pelayanan" name="kode_pelayanan" value="<?= $value->kode_pelayanan; ?>" required>
                             <div class="invalid-feedback">
-                                    Tolong masukan harga.
+                                Tolong masukan kode pelayanan.
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-2 ms-2 me-2">
-                        <label for="formGroupStatusAktif" class="form-label">Status Aktif</label>
-                        <select class="form-select" id="formGroupStatusAktif" aria-label="Default select example" name="status_aktif" required>
-                            <?php if($value->status_aktif == 1):?>
-                                <option selected value="1">Aktif</option>
-                                <option value="0">Tidak Aktif</option>
-                            <?php else :?> 
-                                <option selected value="0">Tidak Aktif</option>
-                                <option value="1">Aktif</option>
-                            <?php endif; ?>
-                        </select>
-                        <div class="invalid-feedback">
-                            Tolong masukan status keaktifan.
+                        <div class="mb-2 ms-2 me-2">
+                            <label for="formGroupNamaPelayanan" class="form-label">Nama Pelayanan</label>
+                            <input type="text" class="form-control" id="formGroupNamaPelayanan" placeholder="Masukan Nama Pelayanan" name="nama_pelayanan" value="<?= $value->nama_pelayanan; ?>" required>
+                            <div class="invalid-feedback">
+                                Tolong masukan nama pelayanan.
+                            </div>
+                        </div>
+                        <div class="mb-2 ms-2 me-2">
+                            <label for="formGroupNamaharga" class="form-label">Harga</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text" id="inputGroupPrepend">Rp</span>
+                                <input type="text" class="uang form-control" id="formGroupNamaharga" aria-describedby="inputGroupPrepend" name="harga" placeholder="Masukan Harga" value="<?= $value->harga; ?>" required>
+                                <div class="invalid-feedback">
+                                    Tolong masukan harga.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2 ms-2 me-2">
+                            <label for="formGroupStatusAktif" class="form-label">Status Aktif</label>
+                            <select class="form-select" id="formGroupStatusAktif" aria-label="Default select example" name="status_aktif" required>
+                                <?php if ($value->status_aktif == 1) : ?>
+                                    <option selected value="1">Aktif</option>
+                                    <option value="0">Tidak Aktif</option>
+                                <?php else : ?>
+                                    <option selected value="0">Tidak Aktif</option>
+                                    <option value="1">Aktif</option>
+                                <?php endif; ?>
+                            </select>
+                            <div class="invalid-feedback">
+                                Tolong masukan status keaktifan.
+                            </div>
+                        </div>
+                        <div class="mb-2 ms-2 me-2">
+                            <label for="TextAreaKeterangan" class="form-label">Keterangan</label>
+                            <textarea class="form-control" id="TextAreaKeterangan" rows="2" name="keterangan" placeholder="Masukan Keterangan"><?= $value->keterangan; ?></textarea>
                         </div>
                     </div>
-                    <div class="mb-2 ms-2 me-2">
-                        <label for="TextAreaKeterangan" class="form-label">Keterangan</label>
-                        <textarea class="form-control" id="TextAreaKeterangan" rows="2" name="keterangan" placeholder="Masukan Keterangan"><?= $value->keterangan; ?></textarea>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit">Update</button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" type="submit">Update</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 <?php endforeach; ?>
 <!-- Akhir Modal Edit Data -->

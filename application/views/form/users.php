@@ -4,7 +4,7 @@
         <ol class="breadcrumb mb-3 mt-4 ">
             <li class="breadcrumb-item">Admin</li>
             <li class="breadcrumb-item">Dashboard</li>
-            <li class="breadcrumb-item active">Input User</li>
+            <li class="breadcrumb-item active">Data User</li>
         </ol>
         <div class="col-xl-12 col-lg-12 col-sm-12">
             <div class="card">
@@ -45,7 +45,7 @@
                                         <?php
                                         if ($value->id_role == 1) {
                                             echo "Admin";
-                                        } elseif($value->id_role == 2) {
+                                        } elseif ($value->id_role == 2) {
                                             echo "Operator";
                                         } ?>
                                     </td>
@@ -65,9 +65,9 @@
                                     </td>
                                     <td><?= $value->keterangan; ?></td>
                                     <td>
-                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<?= $value->id; ?>">Edit</button>
-                                        <a href="<?= base_url('users/hapus_user/'.$value->id)?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
-                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#resetpasswordModal<?= $value->id; ?>">Reset Password</button>
+                                        <a id="getdata" data-id="<?= $value->id; ?>" data-nama="<?= $value->nama_user; ?>" data-username="<?= $value->username; ?>" data-role="<?= $value->id_role; ?>" data-status="<?= $value->status_aktif; ?>" data-keterangan="<?= $value->keterangan; ?>" type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">Edit</a>
+                                        <a href="<?= base_url('users/hapus_user/' . $value->id) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
+                                        <a id="getdata" data-id="<?= $value->id; ?>" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#resetpasswordModal">Reset Password</a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -80,14 +80,14 @@
 </main>
 
 <!-- Modal Tambah Data User -->
-<div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="inputModal" class="inputModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Input Data User</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?= base_url('users/tambah_user') ?>" method="post" class="row needs-validation" name="inputForm" id="inputForm" novalidate>
+            <form action="<?= base_url('users/tambah_user') ?>" method="post" class="row needs-validation" id="inputForm" novalidate>
                 <div class="modal-body">
                     <div class="mb-2 ms-2 me-2">
                         <label for="formGroupNamaUser" class="form-label">Nama User</label>
@@ -107,7 +107,7 @@
                         <label for="formGroupRole" class="form-label">Role</label>
                         <select class="form-select" id="formGroupRole" aria-label="Default select example" name="role" required>
                             <option value="2">Operator</option>
-                            <option value="1">Admin</option>    
+                            <option value="1">Admin</option>
                         </select>
                         <div class="invalid-feedback">
                             Tolong pilih role
@@ -136,66 +136,53 @@
 <!-- Akhir Modal Tambah Data -->
 
 <!-- Modal Edit Data User -->
-<?php 
-$no = 0;
-foreach ($user as $value) : $no++; ?>
-<div class="modal fade" id="editModal<?= $value->id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" class="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Edit data user</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?= base_url('users/edit_user') ?>" method="post" class="row needs-validation" name="inputUser" id="inputUser" novalidate>
+            <form action="<?= base_url('users/edit_user') ?>" method="post" class="row needs-validation" id="editForm" novalidate>
                 <div class="modal-body">
-                    <input type="hidden" name="id" value="<?= $value->id; ?>">
+                    <input type="hide" name="id" id="idedit" hidden>
                     <div class="mb-2 ms-2 me-2">
-                        <label for="formGroupNamaUser" class="form-label">Nama User</label>
-                        <input type="text" class="form-control" id="formGroupNamaUser" value="<?= $value->nama_user; ?>" placeholder="Masukan Nama User" name="nama_user" required>
+                        <label for="editNamaUser" class="form-label">Nama User</label>
+                        <input type="text" class="form-control" id="editNamaUser" value="" placeholder="Masukan Nama User" name="nama_user" required>
                         <div class="invalid-feedback">
                             Tolong masukan nama user.
                         </div>
                     </div>
                     <div class="mb-2 ms-2 me-2">
-                        <label for="formGroupUsername" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="formGroupUsername" value="<?= $value->username; ?>" placeholder="Masukan username" name="username" required>
+                        <label for="editUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="editUsername" placeholder="Masukan username" name="username" required>
                         <div class="invalid-feedback">
                             Tolong masukan username.
                         </div>
                     </div>
                     <div class="mb-2 ms-2 me-2">
-                        <label for="formGroupRole" class="form-label">Role</label>
-                        <select class="form-select" id="formGroupRole" aria-label="Default select example" name="role" required>
-                            <?php if($value->id_role == 1):?>
-                                <option selected value="1">Admin</option>
-                                <option value="2">Operator</option>
-                            <?php else :?> 
-                                <option selected value="2">Operator</option>
-                                <option value="1">Admin</option>
-                            <?php endif; ?> 
+                        <label for="editRole" class="form-label">Role</label>
+                        <select class="form-select" id="editRole" aria-label="Default select example" name="role" required>
+                            <option selected value="1">Admin</option>
+                            <option value="2">Operator</option>
                         </select>
                         <div class="invalid-feedback">
                             Tolong pilih role
                         </div>
                     </div>
                     <div class="mb-2 ms-2 me-2">
-                        <label for="formGroupStatusAktif" class="form-label">Status Aktif</label>
-                        <select class="form-select" id="formGroupStatusAktif" aria-label="Default select example" name="status_aktif" required>
-                            <?php if($value->status_aktif == 1):?>
-                                <option selected value="1">Aktif</option>
-                                <option value="0">Tidak Aktif</option>
-                            <?php else :?> 
-                                <option selected value="0">Tidak Aktif</option>
-                                <option value="1">Aktif</option>
-                            <?php endif; ?>
+                        <label for="editStatusAktif" class="form-label">Status Aktif</label>
+                        <select class="form-select" id="editStatusAktif" aria-label="Default select example" name="status_aktif" required>
+                            <option selected value="1">Aktif</option>
+                            <option value="0">Tidak Aktif</option>
                         </select>
                         <div class="invalid-feedback">
                             Tolong masukan status keaktifan.
                         </div>
                     </div>
                     <div class="mb-2 ms-2 me-2">
-                        <label for="TextAreaKeterangan" class="form-label">Keterangan</label>
-                        <textarea class="form-control" id="TextAreaKeterangan" rows="2" value="<?= $value->keterangan; ?>" name="keterangan" placeholder="Masukan Keterangan"></textarea>
+                        <label for="editKeterangan" class="form-label">Keterangan</label>
+                        <textarea class="form-control" id="editKeterangan" rows="2" name="keterangan" placeholder="Masukan Keterangan"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -206,5 +193,35 @@ foreach ($user as $value) : $no++; ?>
         </div>
     </div>
 </div>
-<?php endforeach; ?>
 <!-- Akhir Modal Edit Data -->
+
+<!-- Modal Edit Rest Password -->
+<div class="modal fade" id="resetpasswordModal" class="resetpasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Reset Password</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="<?= base_url('users/reset_password') ?>" method="post" class="row needs-validation" id="resetForm" novalidate>
+                <div class="modal-body">
+                    <input type="hide" name="id" id="idreset" hidden>
+                    <div class="mb-2 ms-2 me-2">
+                        <label for="formGroupPasswordBaru" class="form-label">Password baru</label>
+                        <input type="password" class="form-control" id="formGroupPasswordBaru" placeholder="Masukan Password Baru" name="password_baru" required>
+                        <div class="invalid-feedback">
+                            Tolong masukan password baru
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Akhir Modal Rset Password -->
