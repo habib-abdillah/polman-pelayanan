@@ -21,7 +21,7 @@ class Detailtransaksi extends CI_Controller
     {
         $data['tittle']     = 'Data Transaksi';
         $data['users']      = M_users::where('username', $this->session->userdata('username'))->get();
-        $data['transaksi']  = M_transaksi::select('ms_transaksi.id_transaksi', 'ms_transaksi.total', 'ms_transaksi.created_at', 'ms_transaksi.updated_at', 'ms_transaksi.timestamp', 'ms_users.nama_user')->join('ms_users', 'ms_users.id_user', '=', 'ms_transaksi.id_admin')->get();
+        $data['transaksi']  = M_transaksi::select('ms_transaksi.id_transaksi', 'ms_transaksi.total', 'ms_transaksi.created_at', 'ms_transaksi.updated_at', 'ms_transaksi.timestamp', 'ms_users.nama_user')->join('ms_users', 'ms_users.id', '=', 'ms_transaksi.id_admin')->get();
         $this->load->view('template/header', $data);
         $this->load->view('form/view_transaksi', $data);
         $this->load->view('template/footer', $data);

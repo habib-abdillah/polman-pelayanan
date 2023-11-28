@@ -22,7 +22,8 @@ class User extends CI_Controller
     public function admin()
     {
         $data['tittle'] = 'Dashboard';
-        $data['users'] = M_users::where('username', $this->session->userdata('username'))->get();
+        $data['users']  = M_users::where('username', $this->session->userdata('username'))->get();
+        $data['user']   = M_users::count();
         $this->load->view('template/header', $data);
         $this->load->view('admin/dashboard', $data);
         $this->load->view('template/footer', $data);

@@ -34,17 +34,6 @@ class Transaksi extends CI_Controller
         $this->load->view('template/footer', $data);
     }
 
-    public function table_transaksi()
-    {
-        $data['tittle']     = 'Data Transaksi';
-        $data['users']      = M_users::where('username', $this->session->userdata('username'))->get();
-        $data['transaksi']  = M_transaksi::join('ms_users', 'ms_users.id_user', '=', 'ms_transaksi.id_admin')->get();
-        $data['d_transaksi'] = M_transaksi::join('trs_detail', 'trs_detail.id_transaksi', '=', 'ms_transaksi.id_transaksi')->get();
-        $this->load->view('template/header', $data);
-        $this->load->view('form/view_transaksi', $data);
-        $this->load->view('template/footer', $data);
-    }
-
     function add_to_cart()
     { //fungsi Add To Cart
         $data = array(
@@ -107,6 +96,8 @@ class Transaksi extends CI_Controller
         $m_transaksi->id_pelanggan = $this->input->post('pelanggan');
         $m_transaksi->id_admin = $this->session->userdata('id_user');
         $m_transaksi->metode_pembayaran = $this->input->post('pembayaran');
+        // $m_transaksi->save();
+        // die();
         try {
             if ($m_transaksi->save()) {
                 $this->session->set_flashdata('message', 'Disimpan');
@@ -124,6 +115,7 @@ class Transaksi extends CI_Controller
                     'detail_log'    => 'GAGAL',
                 ];
                 $this->session->set_userdata($data);
+                $this->cart->destroy();
                 $this->track();
                 $this->session->set_flashdata('message', 'Gagal disimpan');
                 redirect('transaksi');
@@ -194,7 +186,7 @@ class Transaksi extends CI_Controller
             $m_track->username          = $value->username;
             $m_track->pc_name           = $this->input->ip_address();
             $m_track->activity          = $this->session->userdata('log');
-            $m_track->header_reference  = $value->id_user;
+            $m_track->header_reference  = $this->input->post('kode_invoice');
             $m_track->detail_reference  = $this->session->userdata('detail_log');
         }
 

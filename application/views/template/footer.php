@@ -220,8 +220,8 @@
             var pelanggan = $('#pelanggan').val();
             var pembayaran = $('#pembayaran').val();
             $.ajax({
-                url: "<?php echo base_url(); ?>transaksi/tambah_transaksi",
-                method: "POST",
+                url: "<?= base_url('transaksi/tambah_transaksi') ?>",
+                method: "post",
                 data: {
                     kode_invoice: kode_invoice,
                     pelanggan: pelanggan,
@@ -238,9 +238,9 @@
                             $("#invoice_data").html(data);
                             $('#invoiceModal').modal('show');
                         }
-                    });
+                    })
                 }
-            });
+            })
         });
         $("#invoiceModal").on('hidden.bs.modal', function() {
             location.reload();

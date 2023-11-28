@@ -131,7 +131,7 @@ class Pembayaran extends CI_Controller
             $m_track->username          = $value->username;
             $m_track->pc_name           = $this->input->ip_address();
             $m_track->activity          = $this->session->userdata('log');
-            $m_track->header_reference  = $value->id_user;
+            $m_track->header_reference  = $value->id;
             $m_track->detail_reference  = $this->session->userdata('detail_log');
         }
 

@@ -145,7 +145,7 @@
             <div class="mt-3">
                 <div class="card">
                     <div class="d-flex card-body">
-                        <input type="hidden" class="form-control form-control-sm" name="kode_invoice" id="kode_invoice" value="<?= $kode; ?>">
+                        <input type="text" class="form-control form-control-sm" name="kode_invoice" id="kode_invoice" value="<?= $kode; ?>">
                         <button type="submit" id="save_button" class="btn btn-primary ms-auto save-data">Simpan</button>
                         <!-- <button type=" button" id="save_button" class="btn btn-primary ms-auto save-data">see</button> -->
                     </div>

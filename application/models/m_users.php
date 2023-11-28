@@ -7,7 +7,5 @@ class M_users extends Model
 {
     protected $table = 'ms_users';
 
-    public function pelayanan() {
-        return $this->hasMany('M_pelayanan');
-    }
+    
 }
