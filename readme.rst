@@ -2,9 +2,11 @@
       SETTING
 ###################
 database : polman-pelayanan
+
 user admin:
-username : admin
+username : admin 
 password : admin
+
 user operator:
 username : operator1
 password : 123
