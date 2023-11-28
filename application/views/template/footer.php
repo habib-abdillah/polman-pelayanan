@@ -13,7 +13,8 @@
 </div>
 </div>
 <script src="<?= base_url('assets/jQuery/jquery-3.7.1.min.js') ?>"></script>
-<script src="<?= base_url('assets/jQuery/jquery.mask.min.js') ?>"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js "> </script>
+<script script script src="<?= base_url('assets/jQuery/jquery.mask.min.js') ?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="<?= base_url('vendor/sbadmin/') ?>js/scripts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -28,6 +29,10 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+<!-- Number Format datatables -->
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.7/dataRender/intl.js"></script>
+<!-- Moment JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         var table = $('#example').DataTable({
@@ -257,6 +262,97 @@
             newWin.close();
         }, 10);
     }
+
+    $(function() {
+        $("#start_date").datepicker({
+            "dateFormat": "yy-mm-dd"
+        });
+        $("#end_date").datepicker({
+            "dateFormat": "yy-mm-dd"
+        });
+    });
+
+    // Fecth Function
+    function fetch(start_date, end_date) {
+        $.ajax({
+            url: "<?php echo base_url(); ?>laporan/filter_data",
+            type: "POST",
+            data: {
+                start_date: start_date,
+                end_date: end_date
+            },
+            dataType: "json",
+            success: function(data) {
+                var i = "1";
+                $('#table_laporan').DataTable({
+                    responsive: true,
+                    // lengthChange: false,
+                    buttons: ['copy', 'excel', 'print', 'pdf', 'colvis'],
+                    dom: "<'row'<'col-md-3'l><'col-md-6 d-flex justify-content-center'B><'col-md-3'f>>" +
+                        "<'row'<'col-lg-12'tr>>" +
+                        "<'row'<'col-md-5'i><'col-md-7'p>>",
+                    data: data,
+                    columns: [{
+                            data: 'id_transaksi',
+                            "render": function(data, type, row, meta) {
+                                return i++;
+                            }
+                        },
+                        {
+                            data: 'id_transaksi'
+                        },
+                        {
+                            data: 'nama_pelayanan'
+                        },
+                        {
+                            data: 'qty'
+                        },
+                        {
+                            data: 'harga',
+                            "render": $.fn.dataTable.render.number('.', ',', 0, 'Rp ')
+                        },
+                        {
+                            data: 'subtotal',
+                            "render": $.fn.dataTable.render.number('.', ',', 0, 'Rp ')
+                        },
+                        {
+                            data: 'created_at',
+                            "render": function(data, type, row, meta) {
+                                return moment(row.created_at).format('DD MMMM YYYY');
+                            }
+                        }
+                    ]
+                })
+            }
+        });
+    }
+    fetch();
+
+
+    $(document).on("click", "#filter", function(e) {
+        e.preventDefault();
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+
+        if (start_date == "" || end_date == "") {
+            Swal.fire({
+                icon: "error",
+                title: "Sorry",
+                text: "Data tanggal diperlukan!"
+            });
+        } else {
+            $('#table_laporan').DataTable().destroy();
+            fetch(start_date, end_date);
+        }
+    });
+    $(document).on("click", "#reset", function(e) {
+        e.preventDefault();
+        $('#start_date').val('');
+        $('#end_date').val('');
+
+        $('#table_laporan').DataTable().destroy();
+        fetch();
+    });
 </script>
 </body>
 

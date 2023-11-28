@@ -8,6 +8,9 @@ class User extends CI_Controller
     {
         parent::__construct();
         $this->load->model('m_users');
+        $this->load->model('m_pelayanan');
+        $this->load->model('m_pelanggan');
+        $this->load->model('m_transaksi');
         if ($this->session->userdata('logged') != TRUE) {
             $url = base_url('auth');
             redirect($url);
@@ -21,9 +24,13 @@ class User extends CI_Controller
 
     public function admin()
     {
-        $data['tittle'] = 'Dashboard';
-        $data['users']  = M_users::where('username', $this->session->userdata('username'))->get();
-        $data['user']   = M_users::count();
+        $data['tittle']     = 'Dashboard';
+        $data['users']      = M_users::where('username', $this->session->userdata('username'))->get();
+        $data['user']       = M_users::count();
+        $data['pelayanan']  = M_pelayanan::count();
+        $data['pelanggan']  = M_pelanggan::count();
+        $data['pelanggan']  = M_pelanggan::count();
+        $data['transaksi']  = M_transaksi::where('created_at', date('Y-m-d'))->count();
         $this->load->view('template/header', $data);
         $this->load->view('admin/dashboard', $data);
         $this->load->view('template/footer', $data);

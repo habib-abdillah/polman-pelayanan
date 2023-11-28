@@ -29,8 +29,6 @@ class Detailtransaksi extends CI_Controller
 
     public function detail_data()
     {
-        $output = '';
-        $no = 0;
         if ($this->input->post('invoice')) {
             $detail = M_detailtransaksi::where('id_transaksi', $this->input->post('invoice'))->get();
             foreach ($detail as $isi) {

@@ -16,23 +16,25 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <!-- <div class="container">
+                    <div class="container">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text bg-info text-white" id="basic-addon1"><i class="fa-regular fa-calendar-days"></i></span>
+                                    <span class="input-group-text bg-primary text-white" id="basic-addon1"><i class="fa-regular fa-calendar-days"></i></span>
                                     <input type="text" class="form-control" id="start_date" placeholder="Start Date" aria-label="Username" aria-describedby="basic-addon1" readonly>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text bg-info text-white" id="basic-addon1"><i class="fa-regular fa-calendar-days"></i></span>
+                                    <span class="input-group-text bg-primary text-white" id="basic-addon1"><i class="fa-regular fa-calendar-days"></i></span>
                                     <input type="text" class="form-control" id="end_date" placeholder="End Date" aria-label="Username" aria-describedby="basic-addon1" readonly>
                                 </div>
                             </div>
+                            <div class="col-1"><button id="filter" class="btn btn-secondary form-control">Filter</button></div>
+                            <div class="col-1"><button id="reset" class="btn btn-warning form-control">Reset</button></div>
                         </div>
-                    </div> -->
-                    <table id="example" class="table table-striped display responsive nowrap" style="width:100%">
+                    </div>
+                    <table id="table_laporan" class="table table-striped display responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -44,7 +46,7 @@
                                 <th>Tanggal Transaksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <!-- <tbody id="data_laporan">
                             <?php
                             $no = 1;
                             foreach ($laporan as $value) {
@@ -64,7 +66,7 @@
                                     </td>
                                 </tr>
                             <?php } ?>
-                        </tbody>
+                        </tbody> -->
                     </table>
                 </div>
             </div>

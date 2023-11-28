@@ -24,4 +24,16 @@ class Laporan extends CI_Controller
         $this->load->view('form/laporan', $data);
         $this->load->view('template/footer', $data);
     }
+
+    public function filter_data()
+    {
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+        if ($start_date && $end_date) {
+            $laporan = M_detailtransaksi::whereBetween('created_at', [$start_date, $end_date])->get();
+        } else {
+            $laporan = M_detailtransaksi::all();
+        }
+        echo json_encode($laporan);
+    }
 }
