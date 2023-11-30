@@ -8,8 +8,8 @@ username : admin
 password : admin
 
 user operator:
-username : operator1
-password : 123
+username : operator
+password : operator
 
 ###################
 What is CodeIgniter
