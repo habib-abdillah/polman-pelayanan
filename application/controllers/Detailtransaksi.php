@@ -53,10 +53,7 @@ class Detailtransaksi extends CI_Controller
                                     <td height='80px' colspan='4' align='center'><b>Terimakasih !!</b></td>
                                 </tr>
                                 <tr>
-                                    <td colspan='4' align='center'><b>Politeknik Manufaktur</b></td>
-                                </tr>
-                                <tr>
-                                    <td colspan='4' align='center'><b>Negeri Bandung</b></td>
+                                    <td colspan='4' align='center'><b>Politeknik Manufaktur Negeri Bandung</b></td>
                                 </tr>
                     ";
             }

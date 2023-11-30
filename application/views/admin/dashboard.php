@@ -66,11 +66,29 @@
                             </div>
                             <div class="col-md-8 d-flex justify-content-center">
                                 <div class="card-body">
-                                    <h5 class="card-title">Transaksi hari ini</h5>
+                                    <h5 class="card-title">Transaksi</h5>
                                     <p class="card-text"><?= $transaksi; ?> Transaksi</p>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Data</h5>
+                        <canvas id="lineChart" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Data</h5>
+                        <canvas id="lineChart2" height="150"></canvas>
                     </div>
                 </div>
             </div>

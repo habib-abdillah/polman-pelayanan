@@ -34,8 +34,8 @@ class Pelanggan extends CI_Controller
         $m_pelanggan->instansi = $this->input->post('nama_instansi');
         $m_pelanggan->keterangan = $this->input->post('keterangan');
         $m_pelanggan->status_aktif = "1";
-        $m_pelanggan->user_id_buat = $this->session->userdata('id_role');
-        $m_pelanggan->user_id_ubah = $this->session->userdata('id_role');
+        $m_pelanggan->user_id_buat = $this->session->userdata('id_user');
+        $m_pelanggan->user_id_ubah = $this->session->userdata('id_user');
 
         try {
             if ($m_pelanggan->save()) {
@@ -69,7 +69,7 @@ class Pelanggan extends CI_Controller
         $m_pelanggan->instansi = $this->input->post('nama_instansi');
         $m_pelanggan->keterangan = $this->input->post('keterangan');
         $m_pelanggan->status_aktif = $this->input->post('status_aktif');
-        $m_pelanggan->user_id_ubah = $this->session->userdata('id_role');
+        $m_pelanggan->user_id_ubah = $this->session->userdata('id_user');
 
         try {
             if ($m_pelanggan->save()) {

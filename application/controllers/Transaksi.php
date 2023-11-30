@@ -96,8 +96,6 @@ class Transaksi extends CI_Controller
         $m_transaksi->id_pelanggan = $this->input->post('pelanggan');
         $m_transaksi->id_admin = $this->session->userdata('id_user');
         $m_transaksi->metode_pembayaran = $this->input->post('pembayaran');
-        // $m_transaksi->save();
-        // die();
         try {
             if ($m_transaksi->save()) {
                 $this->session->set_flashdata('message', 'Disimpan');
@@ -167,10 +165,7 @@ class Transaksi extends CI_Controller
                                     <td height='80px' colspan='4' align='center'><b>Terimakasih !!</b></td>
                                 </tr>
                                 <tr>
-                                    <td colspan='4' align='center'><b>Politeknik Manufaktur</b></td>
-                                </tr>
-                                <tr>
-                                    <td colspan='4' align='center'><b>Negeri Bandung</b></td>
+                                    <td colspan='4' align='center'><b>Politeknik Manufaktur Negeri Bandung</b></td>
                                 </tr>
 
                         ";

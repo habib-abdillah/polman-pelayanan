@@ -33,8 +33,8 @@ class Pembayaran extends CI_Controller
         $m_pembayaran->jenis_pembayaran = $this->input->post('jenis_pembayaran');
         $m_pembayaran->keterangan       = $this->input->post('keterangan');
         $m_pembayaran->status_aktif     = "1";
-        $m_pembayaran->user_id_buat     = $this->session->userdata('id_role');
-        $m_pembayaran->user_id_ubah     = $this->session->userdata('id_role');
+        $m_pembayaran->user_id_buat     = $this->session->userdata('id_user');
+        $m_pembayaran->user_id_ubah     = $this->session->userdata('id_user');
 
         try {
             if ($m_pembayaran->save()) {
@@ -67,7 +67,7 @@ class Pembayaran extends CI_Controller
         $m_pembayaran->jenis_pembayaran = $this->input->post('jenis_pembayaran');
         $m_pembayaran->keterangan       = $this->input->post('keterangan');
         $m_pembayaran->status_aktif     = $this->input->post('status_aktif');
-        $m_pembayaran->user_id_ubah     = $this->session->userdata('id_role');
+        $m_pembayaran->user_id_ubah     = $this->session->userdata('id_user');
 
         try {
             if ($m_pembayaran->save()) {

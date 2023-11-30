@@ -37,8 +37,8 @@ class Pelayanan extends CI_Controller
         $m_pelayanan->harga = $fharga;
         $m_pelayanan->keterangan = $this->input->post('keterangan');
         $m_pelayanan->status_aktif = "1";
-        $m_pelayanan->user_id_buat = $this->session->userdata('id_role');
-        $m_pelayanan->user_id_ubah = $this->session->userdata('id_role');
+        $m_pelayanan->user_id_buat = $this->session->userdata('id_user');
+        $m_pelayanan->user_id_ubah = $this->session->userdata('id_user');
 
         try {
             if ($m_pelayanan->save()) {
@@ -73,7 +73,7 @@ class Pelayanan extends CI_Controller
         $m_pelayanan->harga = $this->input->post('harga');
         $m_pelayanan->keterangan = $this->input->post('keterangan');
         $m_pelayanan->status_aktif = $this->input->post('status_aktif');
-        $m_pelayanan->user_id_ubah = $this->session->userdata('id_role');
+        $m_pelayanan->user_id_ubah = $this->session->userdata('id_user');
         try {
             if ($m_pelayanan->save()) {
                 $this->session->set_flashdata('message', 'Diedit');

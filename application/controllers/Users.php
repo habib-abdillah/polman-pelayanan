@@ -36,8 +36,8 @@ class Users extends CI_Controller
         $m_user->id_role = $this->input->post('role');
         $m_user->keterangan = $this->input->post('keterangan');
         $m_user->status_aktif = "1";
-        $m_user->user_id_buat = $this->session->userdata('id_role');
-        $m_user->user_id_ubah = $this->session->userdata('id_role');
+        $m_user->user_id_buat = $this->session->userdata('id_user');
+        $m_user->user_id_ubah = $this->session->userdata('id_user');
 
         try {
             if ($m_user->save()) {
@@ -73,7 +73,7 @@ class Users extends CI_Controller
         $m_user->id_role = $this->input->post('role');
         $m_user->keterangan = $this->input->post('keterangan');
         $m_user->status_aktif = $this->input->post('status_aktif');
-        $m_user->user_id_ubah = $this->session->userdata('id_role');
+        $m_user->user_id_ubah = $this->session->userdata('id_user');
 
         try {
             if ($m_user->save()) {

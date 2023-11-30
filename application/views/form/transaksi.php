@@ -60,7 +60,7 @@
                                     <select class="form-select form-select-sm" name="pelayanan" aria-label="Small select example" id="pelayanan">
                                         <?php foreach ($pelayanan as $value) : ?>
                                             <option value="<?= $value->kode_pelayanan; ?>" data-idpelayanan="<?= $value->id; ?>" data-kodepelayanan="<?= $value->kode_pelayanan; ?>" data-namapelayanan="<?= $value->nama_pelayanan; ?>" data-harga="<?= $value->harga; ?>">
-                                                <?= $value->kode_pelayanan; ?>
+                                                <?= $value->nama_pelayanan; ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -76,7 +76,7 @@
                             </div>
                             <div class="row mb-2">
                                 <div class="col d-flex justify-content-center">
-                                    <button name="add_cart" class="add_cart btn btn-success btn-sm"><i class="fa-solid fa-cart-shopping me-2"></i>Tambah ke Kerangjang </button>
+                                    <button id="add_cart" class="add_cart btn btn-success btn-sm"><i class="fa-solid fa-cart-shopping me-2"></i>Tambah ke Keranjang </button>
                                 </div>
                             </div>
                         </div>
@@ -145,9 +145,8 @@
             <div class="mt-3">
                 <div class="card">
                     <div class="d-flex card-body">
-                        <input type="text" class="form-control form-control-sm" name="kode_invoice" id="kode_invoice" value="<?= $kode; ?>">
-                        <button type="submit" id="save_button" class="btn btn-primary ms-auto save-data">Simpan</button>
-                        <!-- <button type=" button" id="save_button" class="btn btn-primary ms-auto save-data">see</button> -->
+                        <input type="hidden" class="form-control form-control-sm" name="kode_invoice" id="kode_invoice" value="<?= $kode; ?>">
+                        <button type="submit" id="save-data" class="btn btn-primary ms-auto save-data">Simpan</button>
                     </div>
                 </div>
             </div>

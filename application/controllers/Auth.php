@@ -29,7 +29,7 @@ class Auth extends CI_Controller
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
-        $users = M_users::where('username', $username)->take(1)->get();
+        $users = M_users::where('username', $username)->get();
         if ($users->isEmpty()) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">User tidak terdaftar!</div>');
             redirect('auth');
