@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-5">
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <span class="input-group-text bg-primary text-white" id="basic-addon1"><i class="fa-regular fa-calendar-days"></i></span>
                                 <input type="text" class="form-control" id="start_date" placeholder="Start Date" aria-label="Username" aria-describedby="basic-addon1" readonly>
                             </div>

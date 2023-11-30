@@ -15,7 +15,7 @@
                             </div>
                             <div class="col-md-8 d-flex justify-content-center">
                                 <div class="card-body">
-                                    <h5 class="card-title ">Pengguna</h5>
+                                    <h6 class="card-title ">Pengguna</h6>
                                     <p class="card-text"><?= $user; ?> User</p>
                                 </div>
                             </div>
@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-md-8 d-flex justify-content-center">
                                 <div class="card-body">
-                                    <h5 class="card-title">Jenis Pelayanan</h5>
+                                    <h6 class="card-title">Jenis Pelayanan</h6>
                                     <p class="card-text"><?= $pelayanan; ?> Jenis</p>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="col-md-8 d-flex justify-content-center">
                                 <div class="card-body">
-                                    <h5 class="card-title">Pelanggan</h5>
+                                    <h6 class="card-title">Pelanggan</h6>
                                     <p class="card-text"><?= $pelanggan; ?> Pelanggan</p>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                             </div>
                             <div class="col-md-8 d-flex justify-content-center">
                                 <div class="card-body">
-                                    <h5 class="card-title">Transaksi</h5>
+                                    <h6 class="card-title">Transaksi</h6>
                                     <p class="card-text"><?= $transaksi; ?> Transaksi</p>
                                 </div>
                             </div>
@@ -76,19 +76,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <div class="card">
+            <div class="col-md-12">
+                <div class="card mb-3">
                     <div class="card-body">
-                        <h5>Data</h5>
-                        <canvas id="lineChart" height="150"></canvas>
+                        <h5>Grafik Transaksi Perbulan dalan 1 Tahun</h5>
+                        <canvas id="lineChart2" height="80"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5>Data</h5>
-                        <canvas id="lineChart2" height="150"></canvas>
+                        <h5>Grafik Penjualan Perbulan dalan 1 Tahun</h5>
+                        <canvas id="lineChart" height="80"></canvas>
                     </div>
                 </div>
             </div>

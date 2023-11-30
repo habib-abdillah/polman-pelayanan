@@ -241,6 +241,8 @@ $(document).ready(function () {
 		var kode_invoice = $("#kode_invoice").val();
 		var pelanggan = $("#pelanggan").val();
 		var pembayaran = $("#pembayaran").val();
+		var tgl_transaksi = $("#tanggal_trs").val();
+		$("#tgl_inv").html(moment(tgl_transaksi).format("DD/MMM/YY"));
 		$.ajax({
 			url: base_url + "transaksi/tambah_transaksi",
 			method: "post",
@@ -248,6 +250,7 @@ $(document).ready(function () {
 				kode_invoice: kode_invoice,
 				pelanggan: pelanggan,
 				pembayaran: pembayaran,
+				tgl_transaksi: tgl_transaksi,
 			},
 			success: function (data) {
 				$.ajax({
@@ -257,6 +260,16 @@ $(document).ready(function () {
 						kode_invoice: kode_invoice,
 					},
 					success: function (data) {
+						$.ajax({
+							url: base_url + "transaksi/kodeInvoice",
+							method: "POST",
+							data: {
+								tgl_transaksi: tgl_transaksi,
+							},
+							success: function (data) {
+								console.log(data);
+							},
+						});
 						$("#invoice_data").html(data);
 						$("#invoiceModal").modal("show");
 					},
@@ -271,7 +284,7 @@ $(document).ready(function () {
 		var tanggal = $(this).data("created");
 		var waktu = $(this).data("time");
 		$("#kode_invoice").html(invoice);
-		$("#tanggal_invoice").html(tanggal);
+		$("#tanggal_invoice").html(moment(tanggal).format("DD/MMM/YY"));
 		$("#waktu_invoice").html(waktu);
 		$.ajax({
 			url: base_url + "detailtransaksi/detail_data",
@@ -299,9 +312,10 @@ $(document).ready(function () {
 		$("#end_date").datepicker({
 			dateFormat: "yy-mm-dd",
 		});
+		$("#tanggal_trs").datepicker({
+			dateFormat: "yy-mm-dd",
+		});
 	});
-
-	
 });
 
 // Function cetak struk
@@ -310,7 +324,7 @@ function printDiv() {
 	var newWin = window.open("", "Print-Window");
 	newWin.document.open();
 	newWin.document.write(
-		'<html><body onload="window.print()">' +
+		'<html><head><style>@page {size: A5;} @media print{@page{size: A5 landscape;}}</style></head><body onload="window.print()">' +
 			divToPrint.innerHTML +
 			"</body></html>"
 	);

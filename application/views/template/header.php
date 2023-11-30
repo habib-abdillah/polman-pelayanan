@@ -23,7 +23,7 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light shadow-sm">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">
+        <a class="navbar-brand ps-3">
             <img src="<?php echo base_url('assets/images/polman1.png') ?>" style="width: 120px;" class="ms-2 me-3 icon">
         </a>
         <!-- Sidebar Toggle-->

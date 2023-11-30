@@ -25,13 +25,31 @@ class Transaksi extends CI_Controller
     {
         $data['tittle']     = 'Transaksi';
         $data['users']      = M_users::where('username', $this->session->userdata('username'))->get();
-        $data['pelayanan']  = M_pelayanan::all();
+        $data['pelayanan']  = M_pelayanan::where('status_aktif', 1)->get();
         $data['pelanggan']  = M_pelanggan::where('status_aktif', 1)->get();
-        $data['transaksi']  = M_transaksi::orderBy('id_transaksi', 'desc')->take(1)->get();
         $data['pembayaran'] = M_pembayaran::where('status_aktif', 1)->get();
+        $data['kodeInvoicee'] = $this->kodeInvoice();
         $this->load->view('template/header', $data);
         $this->load->view('form/transaksi', $data);
         $this->load->view('template/footer', $data);
+        // $this->cart->destroy();
+    }
+
+    function kodeInvoice()
+    {
+        $tanggal = $this->input->post('tgl_transaksi');
+        $kode = M_transaksi::selectRaw('MAX(RIGHT(id_transaksi,4)) AS kd_max')->get();
+        $kd = "";
+        if ($kode) {
+            foreach ($kode as $k) {
+                $tmp = ((int)$k->kd_max) + 1;
+                $kd = sprintf("%04s", $tmp);
+            }
+        } else {
+            $kd = "0001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return date('ym') . $kd;
     }
 
     function add_to_cart()
@@ -96,6 +114,7 @@ class Transaksi extends CI_Controller
         $m_transaksi->id_pelanggan = $this->input->post('pelanggan');
         $m_transaksi->id_admin = $this->session->userdata('id_user');
         $m_transaksi->metode_pembayaran = $this->input->post('pembayaran');
+        $m_transaksi->created_at = $this->input->post('tgl_transaksi');
         try {
             if ($m_transaksi->save()) {
                 $this->session->set_flashdata('message', 'Disimpan');

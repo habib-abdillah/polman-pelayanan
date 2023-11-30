@@ -16,7 +16,10 @@
                                     Tanggal
                                 </div>
                                 <div class="col-8">
-                                    <input disabled type="text" class="form-control form-control-sm" name="date" value="<?= date('d / M / y'); ?>">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-primary text-white" id="basic-addon1"><i class="fa-regular fa-calendar-days"></i></span>
+                                        <input type="text" class="form-control form-control-sm" id="tanggal_trs" value="<?= date('Y-m-d'); ?>" aria-label="Username" aria-describedby="basic-addon1" readonly>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -34,16 +37,7 @@
                                     Kode Invoice
                                 </div>
                                 <div class="col-8">
-                                    <?php foreach ($transaksi as $value) : ?>
-                                        <?php
-                                        $no = $value->id_transaksi;
-                                        $urutan = (int) substr($no, 1);
-                                        $urutan++;
-                                        $huruf = "M";
-                                        $kode = $huruf . sprintf("%04s", $urutan);
-                                        ?>
-                                    <?php endforeach; ?>
-                                    <input disabled type="text" class="form-control form-control-sm" name="kode_invoice" value="<?= $kode; ?>">
+                                    <input disabled type="text" class="form-control form-control-sm" name="kode_invoice" value="<?= $kodeInvoicee; ?>">
                                 </div>
                             </div>
                         </div>
@@ -145,7 +139,7 @@
             <div class="mt-3">
                 <div class="card">
                     <div class="d-flex card-body">
-                        <input type="hidden" class="form-control form-control-sm" name="kode_invoice" id="kode_invoice" value="<?= $kode; ?>">
+                        <input type="hidden" class="form-control form-control-sm" name="kode_invoice" id="kode_invoice" value="<?= $kodeInvoicee; ?>">
                         <button type="submit" id="save-data" class="btn btn-primary ms-auto save-data">Simpan</button>
                     </div>
                 </div>
@@ -177,8 +171,8 @@
                                     <td colspan="4" align="center"><b>Contact:</b> (022) 2500241</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><b>Tanggal:</b> <?= date('d / M / y'); ?></span> </td>
-                                    <td colspan="2" align="right"><b>No Invoice:</b> <?= $kode; ?></td>
+                                    <td colspan="2"><b>Tanggal:</b> <span id="tgl_inv"></span> </td>
+                                    <td colspan="2" align="right"><b>No Invoice:</b> <?= $kodeInvoicee; ?></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><b>Admin: </b>

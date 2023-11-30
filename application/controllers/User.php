@@ -34,9 +34,9 @@ class User extends CI_Controller
         $data['pelayanan']  = M_pelayanan::count();
         $data['pelanggan']  = M_pelanggan::count();
         $data['pelanggan']  = M_pelanggan::count();
-        $data['transaksi']  = M_transaksi::where('created_at', date('Y-m-d'))->count();
-        $data['chartBulan']  = M_detailtransaksi::selectRaw('Month(created_at) bulan, count(id_transaksi) as jumlah')->groupBy('bulan')->get();
-        $data['chartTransaksi']  = M_transaksi::selectRaw('Month(created_at) bulan, count(id_transaksi) as jumlah')->groupBy('bulan')->get();
+        $data['transaksi']  = M_transaksi::count();
+        $data['chartBulan']  = M_detailtransaksi::selectRaw('Month(created_at) bulan, sum(qty) as jumlah')->whereYear('created_at', '=', date('Y'))->groupBy('bulan')->get();
+        $data['chartTransaksi']  = M_transaksi::selectRaw('Month(created_at) bulan, count(id_transaksi) as jumlah')->whereYear('created_at', '=', date('Y'))->groupBy('bulan')->get();
         $this->load->view('template/header', $data);
         $this->load->view('admin/dashboard', $data);
         $this->load->view('template/footer', $data);
@@ -45,7 +45,14 @@ class User extends CI_Controller
     public function operator()
     {
         $data['tittle'] = 'Dashboard';
+        $data['user']       = M_users::count();
+        $data['pelayanan']  = M_pelayanan::count();
+        $data['pelanggan']  = M_pelanggan::count();
+        $data['pelanggan']  = M_pelanggan::count();
+        $data['transaksi']  = M_transaksi::count();
         $data['users'] = M_users::where('username', $this->session->userdata('username'))->get();
+        $data['chartBulan']  = M_detailtransaksi::selectRaw('Month(created_at) bulan, count(id_transaksi) as jumlah')->whereYear('created_at', '=', date('Y'))->groupBy('bulan')->get();
+        $data['chartTransaksi']  = M_transaksi::selectRaw('Month(created_at) bulan, count(id_transaksi) as jumlah')->whereYear('created_at', '=', date('Y'))->groupBy('bulan')->get();
         $this->load->view('template/header', $data);
         $this->load->view('operator/dashboard', $data);
         $this->load->view('template/footer', $data);

@@ -67,10 +67,12 @@ class Pelayanan extends CI_Controller
 
     public function edit_pelayanan()
     {
+        $harga = $this->input->post('harga');
+        $fharga = preg_replace("/[^0-9]/", "", $harga);
         $m_pelayanan = M_pelayanan::find($this->input->post('id'));
         $m_pelayanan->kode_pelayanan = $this->input->post('kode_pelayanan');
         $m_pelayanan->nama_pelayanan = $this->input->post('nama_pelayanan');
-        $m_pelayanan->harga = $this->input->post('harga');
+        $m_pelayanan->harga = $fharga;
         $m_pelayanan->keterangan = $this->input->post('keterangan');
         $m_pelayanan->status_aktif = $this->input->post('status_aktif');
         $m_pelayanan->user_id_ubah = $this->session->userdata('id_user');

@@ -66,7 +66,7 @@
                                     <td><?= $value->keterangan; ?></td>
                                     <td>
                                         <a id="getdata" data-id="<?= $value->id; ?>" data-nama="<?= $value->nama_user; ?>" data-username="<?= $value->username; ?>" data-role="<?= $value->id_role; ?>" data-status="<?= $value->status_aktif; ?>" data-keterangan="<?= $value->keterangan; ?>" type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">Edit</a>
-                                        <a href="<?= base_url('users/hapus_user/' . $value->id) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
+                                        <!-- <a href="<?= base_url('users/hapus_user/' . $value->id) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a> -->
                                         <a id="getdata" data-id="<?= $value->id; ?>" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#resetpasswordModal">Reset Password</a>
                                     </td>
                                 </tr>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="mb-2 ms-2 me-2">
                         <label for="formGroupPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="formGroupPassword" placeholder="Masukan username" name="password" required>
+                        <input type="password" class="form-control" id="formGroupPassword" placeholder="Masukan password" name="password" required>
                         <div class="invalid-feedback">
                             Tolong masukan password.
                         </div>

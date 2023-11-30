@@ -44,98 +44,106 @@
     var base_url = "<?= base_url(); ?>";
 </script>
 <script>
-    var chart = document.getElementById('lineChart');
-    var chart2 = document.getElementById('lineChart2');
+    if (document.getElementById('lineChart')) {
+        var chart = document.getElementById('lineChart');
+    }
+    if (document.getElementById('lineChart2')) {
+        var chart2 = document.getElementById('lineChart2');
+    }
     var dataBulan = [];
     var dataJumlah = [];
     var dataBulan2 = [];
     var dataInvoice = [];
 
-    <?php foreach ($chartBulan as $value) : ?>
-        var dBulan = <?= $value->bulan ?>;
-        switch (dBulan) {
-            case 1:
-                bulan = "Januari";
-                break
-            case 2:
-                bulan = "Februari";
-                break
-            case 3:
-                bulan = "Maret";
-                break
-            case 4:
-                bulan = "April";
-                break
-            case 5:
-                bulan = "Mei";
-                break
-            case 6:
-                bulan = "Juni";
-                break
-            case 7:
-                bulan = "Juli";
-                break
-            case 8:
-                bulan = "Agustus";
-                break
-            case 9:
-                bulan = "September";
-                break
-            case 10:
-                bulan = "Oktober";
-                break
-            case 11:
-                bulan = "November";
-                break
-            case 12:
-                bulan = "Desember"
-        }
-        dataBulan.push(bulan);
-        dataJumlah.push(<?= $value->jumlah ?>);
-    <?php endforeach; ?>
+    <?php if (isset($chartBulan)) : ?>
+        <?php foreach ($chartBulan as $value) : ?>
+            var dBulan = <?php echo $value->bulan ?>;
+            switch (dBulan) {
+                case 1:
+                    bulan = "Januari";
+                    break
+                case 2:
+                    bulan = "Februari";
+                    break
+                case 3:
+                    bulan = "Maret";
+                    break
+                case 4:
+                    bulan = "April";
+                    break
+                case 5:
+                    bulan = "Mei";
+                    break
+                case 6:
+                    bulan = "Juni";
+                    break
+                case 7:
+                    bulan = "Juli";
+                    break
+                case 8:
+                    bulan = "Agustus";
+                    break
+                case 9:
+                    bulan = "September";
+                    break
+                case 10:
+                    bulan = "Oktober";
+                    break
+                case 11:
+                    bulan = "November";
+                    break
+                case 12:
+                    bulan = "Desember"
+            }
+            dataBulan.push(bulan);
+            dataJumlah.push(<?= $value->jumlah ?>);
+        <?php endforeach; ?>
+    <?php endif; ?>
 
-    <?php foreach ($chartTransaksi as $value) : ?>
-        var dBulan = <?= $value->bulan ?>;
-        switch (dBulan) {
-            case 1:
-                bulan = "Januari";
-                break
-            case 2:
-                bulan = "Februari";
-                break
-            case 3:
-                bulan = "Maret";
-                break
-            case 4:
-                bulan = "April";
-                break
-            case 5:
-                bulan = "Mei";
-                break
-            case 6:
-                bulan = "Juni";
-                break
-            case 7:
-                bulan = "Juli";
-                break
-            case 8:
-                bulan = "Agustus";
-                break
-            case 9:
-                bulan = "September";
-                break
-            case 10:
-                bulan = "Oktober";
-                break
-            case 11:
-                bulan = "November";
-                break
-            case 12:
-                bulan = "Desember"
-        }
-        dataBulan2.push(bulan);
-        dataInvoice.push(<?= $value->jumlah ?>);
-    <?php endforeach; ?>
+    <?php if (isset($chartBulan)) : ?>
+        <?php foreach ($chartTransaksi as $value) : ?>
+            var dBulan = <?php echo $value->bulan ?>;
+            switch (dBulan) {
+                case 1:
+                    bulan = "Januari";
+                    break
+                case 2:
+                    bulan = "Februari";
+                    break
+                case 3:
+                    bulan = "Maret";
+                    break
+                case 4:
+                    bulan = "April";
+                    break
+                case 5:
+                    bulan = "Mei";
+                    break
+                case 6:
+                    bulan = "Juni";
+                    break
+                case 7:
+                    bulan = "Juli";
+                    break
+                case 8:
+                    bulan = "Agustus";
+                    break
+                case 9:
+                    bulan = "September";
+                    break
+                case 10:
+                    bulan = "Oktober";
+                    break
+                case 11:
+                    bulan = "November";
+                    break
+                case 12:
+                    bulan = "Desember"
+            }
+            dataBulan2.push(bulan);
+            dataInvoice.push(<?= $value->jumlah ?>);
+        <?php endforeach; ?>
+    <?php endif; ?>
 
     var dataChart = {
         labels: dataBulan,
@@ -159,15 +167,18 @@
         }]
     }
 
-    var chartBulan = new Chart(chart, {
-        type: 'line',
-        data: dataChart
-    })
-
-    var chartBulan2 = new Chart(chart2, {
-        type: 'line',
-        data: dataChart2
-    })
+    if (document.getElementById('lineChart')) {
+        var chartBulan = new Chart(chart, {
+            type: 'line',
+            data: dataChart
+        })
+    }
+    if (document.getElementById('lineChart2')) {
+        var chartBulan2 = new Chart(chart2, {
+            type: 'line',
+            data: dataChart2
+        })
+    }
 </script>
 </body>
 
