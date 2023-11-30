@@ -260,16 +260,6 @@ $(document).ready(function () {
 						kode_invoice: kode_invoice,
 					},
 					success: function (data) {
-						$.ajax({
-							url: base_url + "transaksi/kodeInvoice",
-							method: "POST",
-							data: {
-								tgl_transaksi: tgl_transaksi,
-							},
-							success: function (data) {
-								console.log(data);
-							},
-						});
 						$("#invoice_data").html(data);
 						$("#invoiceModal").modal("show");
 					},
