@@ -1,0 +1,143 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * ┌──────────────────────────────────────────────────────────┐
+ * │  Polman Migration CLI                                    │
+ * │  Laravel-style migrate tool for CodeIgniter 3            │
+ * ├──────────────────────────────────────────────────────────┤
+ * │  Usage:                                                  │
+ * │    php migrate                     Run pending migrations│
+ * │    php migrate rollback            Rollback last batch   │
+ * │    php migrate reset               Rollback all          │
+ * │    php migrate refresh             Reset + migrate       │
+ * │    php migrate fresh               Drop all + migrate    │
+ * │    php migrate status              Show migration status │
+ * │    php migrate make <Name>         Create migration file │
+ * │    php migrate seed                Run DatabaseSeeder    │
+ * │    php migrate seed <ClassName>    Run specific seeder   │
+ * └──────────────────────────────────────────────────────────┘
+ */
+
+define('BASE_PATH', __DIR__);
+
+// ─── Load .env ──────────────────────────────────────────────────────────────
+$envFile = BASE_PATH . '/.env';
+if (!file_exists($envFile)) {
+    die("\033[31m[ERROR] .env file not found. Copy .env.example to .env first.\033[0m\n");
+}
+foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+    $line = trim($line);
+    if ($line === '' || strpos($line, '#') === 0) continue;
+    if (strpos($line, '=') !== false) {
+        [$key, $val] = explode('=', $line, 2);
+        $_ENV[trim($key)] = trim($val);
+    }
+}
+
+// ─── Autoload MigrateCore ───────────────────────────────────────────────────
+spl_autoload_register(function (string $class) {
+    $prefix = 'MigrateCore\\';
+    if (strpos($class, $prefix) === 0) {
+        $file = BASE_PATH . '/MigrateCore/' . substr($class, strlen($prefix)) . '.php';
+        if (file_exists($file)) require_once $file;
+    }
+});
+
+// ─── DB Connection ───────────────────────────────────────────────────────────
+$host = $_ENV['DB_HOST'] ?? '127.0.0.1';
+$port = $_ENV['DB_PORT'] ?? '3306';
+$name = $_ENV['DB_NAME'] ?? 'polman_pelayanan';
+$user = $_ENV['DB_USER'] ?? 'root';
+$pass = $_ENV['DB_PASS'] ?? '';
+
+try {
+    $pdo = new PDO(
+        "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4",
+        $user, $pass,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+} catch (PDOException $e) {
+    die("\033[31m[DB ERROR] " . $e->getMessage() . "\033[0m\n");
+}
+
+// ─── Paths ───────────────────────────────────────────────────────────────────
+$migrationsPath = BASE_PATH . '/database/migrations';
+$seedersPath    = BASE_PATH . '/database/seeders';
+
+// ─── Runners ─────────────────────────────────────────────────────────────────
+use MigrateCore\MigrationRunner;
+use MigrateCore\SeederRunner;
+
+$runner = new MigrationRunner($pdo, $migrationsPath);
+$seeder = new SeederRunner($pdo, $seedersPath);
+
+// ─── Parse Command ───────────────────────────────────────────────────────────
+$command = $argv[1] ?? 'migrate';
+$arg2    = $argv[2] ?? null;
+
+echo PHP_EOL;
+
+switch ($command) {
+    case 'migrate':
+        echo "\033[36m  Running migrations...\033[0m" . PHP_EOL . PHP_EOL;
+        $runner->migrate();
+        break;
+
+    case 'rollback':
+        echo "\033[36m  Rolling back last batch...\033[0m" . PHP_EOL . PHP_EOL;
+        $runner->rollback();
+        break;
+
+    case 'reset':
+        echo "\033[36m  Resetting all migrations...\033[0m" . PHP_EOL . PHP_EOL;
+        $runner->reset();
+        break;
+
+    case 'refresh':
+        echo "\033[36m  Refreshing migrations...\033[0m" . PHP_EOL . PHP_EOL;
+        $runner->reset();
+        echo PHP_EOL;
+        $runner->migrate();
+        break;
+
+    case 'fresh':
+        echo "\033[36m  Fresh migration...\033[0m" . PHP_EOL . PHP_EOL;
+        $runner->fresh();
+        break;
+
+    case 'status':
+        echo "\033[36m  Migration Status\033[0m" . PHP_EOL . PHP_EOL;
+        $runner->status();
+        break;
+
+    case 'make':
+        if (!$arg2) {
+            die("\033[31m  Usage: php migrate make <MigrationName>\033[0m\n");
+        }
+        $runner->make($arg2);
+        break;
+
+    case 'seed':
+        echo "\033[36m  Running seeders...\033[0m" . PHP_EOL . PHP_EOL;
+        $seeder->run($arg2);
+        break;
+
+    default:
+        echo <<<HELP
+\033[33m  Polman Migration CLI — Available Commands:\033[0m
+
+    \033[32mphp migrate\033[0m                     Run pending migrations
+    \033[32mphp migrate rollback\033[0m            Rollback last batch
+    \033[32mphp migrate reset\033[0m               Rollback all migrations
+    \033[32mphp migrate refresh\033[0m             Reset + re-run all migrations
+    \033[32mphp migrate fresh\033[0m               Drop all tables + migrate
+    \033[32mphp migrate status\033[0m              Show migration status table
+    \033[32mphp migrate make <Name>\033[0m         Create a new migration file
+    \033[32mphp migrate seed\033[0m                Run DatabaseSeeder
+    \033[32mphp migrate seed <ClassName>\033[0m    Run a specific seeder
+
+HELP;
+}
+
+echo PHP_EOL;

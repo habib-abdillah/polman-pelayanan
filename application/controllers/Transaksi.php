@@ -15,6 +15,7 @@ class Transaksi extends CI_Controller
         $this->load->model('m_transaksi');
         $this->load->model('m_pembayaran');
         $this->load->model('m_detailtransaksi');
+        $this->cart->product_name_safe = FALSE;
         if ($this->session->userdata('logged') != TRUE) {
             $url = base_url('auth');
             redirect($url);
