@@ -55,7 +55,9 @@ $(document).ready(function () {
 			},
 		});
 	}
-	fetch();
+	if ($("#table_laporan").length) {
+		fetch();
+	}
 
 	// Filter data laporan
 	$(document).on("click", "#filter", function (e) {
@@ -86,24 +88,21 @@ $(document).ready(function () {
 	});
 
 	//Datatables
-	var table = $("#example").DataTable({
-		responsive: true,
-		// lengthChange: false,
-		buttons: ["copy", "excel", "print", "pdf", "colvis"],
-		dom:
-			"<'row'<'col-md-3'l><'col-md-6 d-flex justify-content-center'B><'col-md-3'f>>" +
-			"<'row'<'col-lg-12'tr>>" +
-			"<'row'<'col-md-5'i><'col-md-7'p>>",
-	});
+	if ($("#example").length) {
+		var table = $("#example").DataTable({
+			responsive: true,
+			// lengthChange: false,
+			buttons: ["copy", "excel", "print", "pdf", "colvis"],
+			dom:
+				"<'row'<'col-md-3'l><'col-md-6 d-flex justify-content-center'B><'col-md-3'f>>" +
+				"<'row'<'col-lg-12'tr>>" +
+				"<'row'<'col-md-5'i><'col-md-7'p>>",
+		});
 
-	table.buttons().container().appendTo("#example_wrapper .col-md-6:eq(0)");
-	$("#table-transaksi").DataTable({
-		responsive: true,
-		searching: false,
-		info: false,
-		ordering: false,
-		paging: false,
-	});
+		if (table.buttons && table.buttons().container) {
+			table.buttons().container().appendTo("#example_wrapper .col-md-6:eq(0)");
+		}
+	}
 
 	//Masking input uang
 	$(".uang").mask("000.000.000", {
@@ -253,6 +252,14 @@ $(document).ready(function () {
 				tgl_transaksi: tgl_transaksi,
 			},
 			success: function (data) {
+				if (data.trim() === "empty_cart") {
+					Swal.fire({
+						icon: "warning",
+						title: "Perhatian",
+						text: "Keranjang belanja masih kosong! Silakan tambahkan barang terlebih dahulu.",
+					});
+					return;
+				}
 				$.ajax({
 					url: base_url + "transaksi/detail_data",
 					method: "POST",

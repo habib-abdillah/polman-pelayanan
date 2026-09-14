@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: polman-pelayanan-app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8079}:80"
+    volumes:
+      - ./:/var/www/html
+    env_file:
+      - .env
+    environment:
+      - CI_ENV=${CI_ENV:-development}
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME:-polman_pelayanan}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASS=${DB_PASS:-root}
+      - BASE_URL=${BASE_URL:-http://localhost:8079/}
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.4
+    container_name: polman-pelayanan-db
+    restart: unless-stopped
+    ports:
+      - "${MYSQL_PORT:-3307}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-polman_pelayanan}
+    volumes:
+      - ./polman_pelayanan.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - polman_db_data:/var/lib/mysql
+
+volumes:
+  polman_db_data:

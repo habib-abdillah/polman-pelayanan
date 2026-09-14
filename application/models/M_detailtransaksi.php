@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class M_detailtransaksi extends Model
 {
+    public $timestamps = false;
     protected $table = 'trs_detail';
     protected $guarded = [];
 }

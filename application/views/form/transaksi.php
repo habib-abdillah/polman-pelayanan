@@ -140,7 +140,7 @@
                 <div class="card">
                     <div class="d-flex card-body">
                         <input type="hidden" class="form-control form-control-sm" name="kode_invoice" id="kode_invoice" value="<?= $kodeInvoicee; ?>">
-                        <button type="submit" id="save-data" class="btn btn-primary ms-auto save-data">Simpan</button>
+                        <button type="button" id="save-data" class="btn btn-primary ms-auto save-data">Simpan</button>
                     </div>
                 </div>
             </div>

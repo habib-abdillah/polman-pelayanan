@@ -6,10 +6,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'polman_pelayanan',
+	'hostname' => getenv('DB_HOST') ?: 'localhost',
+	'username' => getenv('DB_USER') ?: 'root',
+	'password' => getenv('DB_PASS') !== false ? getenv('DB_PASS') : '',
+	'database' => getenv('DB_NAME') ?: 'polman_pelayanan',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -23,7 +23,8 @@ $db['default'] = array(
 	'compress' => FALSE,
 	'stricton' => FALSE,
 	'failover' => array(),
-	'save_queries' => TRUE
+	'save_queries' => TRUE,
+	'port'     => (int)(getenv('DB_PORT') ?: 3306)
 );
 
 /*
@@ -36,6 +37,7 @@ $capsule = new Capsule;
 $capsule->addConnection([
     'driver'    => 'mysql',
     'host'      => $db['default']['hostname'],
+    'port'      => $db['default']['port'],
     'database'  => $db['default']['database'],
     'username'  => $db['default']['username'],
     'password'  => $db['default']['password'],

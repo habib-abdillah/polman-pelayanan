@@ -107,16 +107,22 @@ class Transaksi extends CI_Controller
 
     public function tambah_transaksi()
     {
-        $this->tambah_detail_transaksi();
+        if ($this->cart->total_items() == 0) {
+            echo "empty_cart";
+            return;
+        }
         $m_transaksi = new M_transaksi();
         $m_transaksi->id_transaksi = $this->input->post('kode_invoice');
         $m_transaksi->total = $this->cart->total();
         $m_transaksi->id_pelanggan = $this->input->post('pelanggan');
         $m_transaksi->id_admin = $this->session->userdata('id_user');
         $m_transaksi->metode_pembayaran = $this->input->post('pembayaran');
-        $m_transaksi->created_at = $this->input->post('tgl_transaksi');
+        $tgl = $this->input->post('tgl_transaksi') ?: date('Y-m-d');
+        $m_transaksi->created_at = $tgl;
+        $m_transaksi->updated_at = $tgl;
         try {
             if ($m_transaksi->save()) {
+                $this->tambah_detail_transaksi();
                 $this->session->set_flashdata('message', 'Disimpan');
                 $data = [
                     'log'           => 'INPUT DATA TRANSAKSI',
@@ -125,7 +131,7 @@ class Transaksi extends CI_Controller
                 $this->session->set_userdata($data);
                 $this->cart->destroy();
                 $this->track();
-                redirect('transaksi');
+                echo "success";
             } else {
                 $data = [
                     'log'           => 'INPUT DATA TRANSAKSI',
@@ -135,9 +141,10 @@ class Transaksi extends CI_Controller
                 $this->cart->destroy();
                 $this->track();
                 $this->session->set_flashdata('message', 'Gagal disimpan');
-                redirect('transaksi');
+                echo "failed";
             }
-        } catch (Illuminate\Database\QueryException $e) {
+        } catch (\Exception $e) {
+            log_message('error', 'Transaksi error: ' . $e->getMessage());
             echo $e->getMessage();
         }
     }
@@ -145,6 +152,7 @@ class Transaksi extends CI_Controller
     public function tambah_detail_transaksi()
     {
         $no = 0;
+        $tgl = $this->input->post('tgl_transaksi') ?: date('Y-m-d');
         foreach ($this->cart->contents() as $items) {
             $no++;
             $m_detailtransaksi = new M_detailtransaksi();
@@ -154,6 +162,8 @@ class Transaksi extends CI_Controller
             $m_detailtransaksi->harga = $items['price'];
             $m_detailtransaksi->qty = $items['qty'];
             $m_detailtransaksi->subtotal = $items['subtotal'];
+            $m_detailtransaksi->created_at = $tgl;
+            $m_detailtransaksi->updated_at = $tgl;
             $m_detailtransaksi->save();
         }
     }

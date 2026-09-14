@@ -44,140 +44,70 @@
     var base_url = "<?= base_url(); ?>";
 </script>
 <script>
-    if (document.getElementById('lineChart')) {
-        var chart = document.getElementById('lineChart');
-    }
-    if (document.getElementById('lineChart2')) {
-        var chart2 = document.getElementById('lineChart2');
-    }
-    var dataBulan = [];
-    var dataJumlah = [];
-    var dataBulan2 = [];
+    var dataBulan   = [];
+    var dataJumlah  = [];
+    var dataBulan2  = [];
     var dataInvoice = [];
 
-    <?php if (isset($chartBulan)) : ?>
+    var monthNames = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                      "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+    <?php if (!empty($chartBulan)) : ?>
         <?php foreach ($chartBulan as $value) : ?>
-            var dBulan = <?php echo $value->bulan ?>;
-            switch (dBulan) {
-                case 1:
-                    bulan = "Januari";
-                    break
-                case 2:
-                    bulan = "Februari";
-                    break
-                case 3:
-                    bulan = "Maret";
-                    break
-                case 4:
-                    bulan = "April";
-                    break
-                case 5:
-                    bulan = "Mei";
-                    break
-                case 6:
-                    bulan = "Juni";
-                    break
-                case 7:
-                    bulan = "Juli";
-                    break
-                case 8:
-                    bulan = "Agustus";
-                    break
-                case 9:
-                    bulan = "September";
-                    break
-                case 10:
-                    bulan = "Oktober";
-                    break
-                case 11:
-                    bulan = "November";
-                    break
-                case 12:
-                    bulan = "Desember"
-            }
-            dataBulan.push(bulan);
-            dataJumlah.push(<?= $value->jumlah ?>);
+            dataBulan.push(monthNames[<?= (int)$value->bulan ?>]);
+            dataJumlah.push(<?= (int)$value->jumlah ?>);
         <?php endforeach; ?>
     <?php endif; ?>
 
-    <?php if (isset($chartBulan)) : ?>
+    <?php if (!empty($chartTransaksi)) : ?>
         <?php foreach ($chartTransaksi as $value) : ?>
-            var dBulan = <?php echo $value->bulan ?>;
-            switch (dBulan) {
-                case 1:
-                    bulan = "Januari";
-                    break
-                case 2:
-                    bulan = "Februari";
-                    break
-                case 3:
-                    bulan = "Maret";
-                    break
-                case 4:
-                    bulan = "April";
-                    break
-                case 5:
-                    bulan = "Mei";
-                    break
-                case 6:
-                    bulan = "Juni";
-                    break
-                case 7:
-                    bulan = "Juli";
-                    break
-                case 8:
-                    bulan = "Agustus";
-                    break
-                case 9:
-                    bulan = "September";
-                    break
-                case 10:
-                    bulan = "Oktober";
-                    break
-                case 11:
-                    bulan = "November";
-                    break
-                case 12:
-                    bulan = "Desember"
-            }
-            dataBulan2.push(bulan);
-            dataInvoice.push(<?= $value->jumlah ?>);
+            dataBulan2.push(monthNames[<?= (int)$value->bulan ?>]);
+            dataInvoice.push(<?= (int)$value->jumlah ?>);
         <?php endforeach; ?>
     <?php endif; ?>
-
-    var dataChart = {
-        labels: dataBulan,
-        datasets: [{
-            label: "Data Penjualan Per-Bulan",
-            data: dataJumlah,
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    }
-
-    var dataChart2 = {
-        labels: dataBulan2,
-        datasets: [{
-            label: "Data Transaksi Per-Bulan",
-            data: dataInvoice,
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }]
-    }
 
     if (document.getElementById('lineChart')) {
-        var chartBulan = new Chart(chart, {
+        new Chart(document.getElementById('lineChart'), {
             type: 'line',
-            data: dataChart
-        })
+            data: {
+                labels: dataBulan,
+                datasets: [{
+                    label: "Data Penjualan Per-Bulan (Qty)",
+                    data: dataJumlah,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
     }
+
     if (document.getElementById('lineChart2')) {
-        var chartBulan2 = new Chart(chart2, {
+        new Chart(document.getElementById('lineChart2'), {
             type: 'line',
-            data: dataChart2
-        })
+            data: {
+                labels: dataBulan2,
+                datasets: [{
+                    label: "Data Transaksi Per-Bulan",
+                    data: dataInvoice,
+                    fill: false,
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
     }
 </script>
 </body>

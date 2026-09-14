@@ -28,24 +28,27 @@
         </a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-        <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-            </div>
-        </form>
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+
+        <!-- Navbar Profile -->
+        <ul class="navbar-nav ms-auto me-3">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0;">
+                        <?= strtoupper(substr($this->session->userdata('nama') ?: $this->session->userdata('username'), 0, 1)) ?>
+                    </div>
+                    <div class="d-none d-md-block lh-1">
+                        <div style="font-size:13px;font-weight:600;color:#212529;"><?= htmlspecialchars($this->session->userdata('nama') ?: $this->session->userdata('username')) ?></div>
+                        <div style="font-size:11px;color:#6c757d;"><?= $this->session->userdata('id_role') == 1 ? 'Administrator' : 'Operator' ?></div>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="navbarDropdown" style="min-width:180px;">
                     <li>
-                        <hr class="dropdown-divider" />
+                        <div class="px-3 py-2 border-bottom">
+                            <div style="font-size:13px;font-weight:600;"><?= htmlspecialchars($this->session->userdata('nama') ?: $this->session->userdata('username')) ?></div>
+                            <div style="font-size:11px;color:#6c757d;"><?= $this->session->userdata('id_role') == 1 ? 'Administrator' : 'Operator' ?></div>
+                        </div>
                     </li>
-                    <li><a class="dropdown-item" href="<?= base_url('auth/logout') ?>">Logout</a></li>
+                    <li><a class="dropdown-item text-danger" href="<?= base_url('auth/logout') ?>"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -61,32 +64,39 @@
                             $link = "user/admin";
                         } else {
                             $link = "user/operator";
-                        } ?>
-                        <a class="nav-link" href="<?= base_url($link); ?>">
+                        }
+                        $current_uri = $this->uri->uri_string();
+                        $master_subs = ['pelayanan', 'users', 'pelanggan', 'pembayaran', 'detailtransaksi'];
+                        $master_active = false;
+                        foreach ($master_subs as $sub) {
+                            if (strpos($current_uri, $sub) !== false) { $master_active = true; break; }
+                        }
+                        ?>
+                        <a class="nav-link <?= (strpos($current_uri, 'user/admin') !== false || strpos($current_uri, 'user/operator') !== false) ? 'active' : '' ?>" href="<?= base_url($link); ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-fw fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link" href="<?= base_url('transaksi'); ?>">
+                        <a class="nav-link <?= strpos($current_uri, 'transaksi') !== false && strpos($current_uri, 'detailtransaksi') === false ? 'active' : '' ?>" href="<?= base_url('transaksi'); ?>">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-fw fa-pen-to-square"></i></div>
                             Input Data Transaksi
                         </a>
                         <?php
                         if ($this->session->userdata('id_role') == 1) { ?>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link <?= $master_active ? '' : 'collapsed' ?>" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="<?= $master_active ? 'true' : 'false' ?>" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-fw fa-database"></i></div>
                                 Master Data
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <div class="collapse <?= $master_active ? 'show' : '' ?>" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?= base_url('pelayanan'); ?>">Data Jenis Pelayanan</a>
-                                    <a class="nav-link" href="<?= base_url('users'); ?>">Data User</a>
-                                    <a class="nav-link" href="<?= base_url('pelanggan'); ?>">Data Pelanggan</a>
-                                    <a class="nav-link" href="<?= base_url('pembayaran'); ?>">Data pembayaran</a>
-                                    <a class="nav-link" href="<?= base_url('detailtransaksi'); ?>">Data Transaksi</a>
+                                    <a class="nav-link <?= strpos($current_uri, 'pelayanan') !== false ? 'active' : '' ?>" href="<?= base_url('pelayanan'); ?>">Data Jenis Pelayanan</a>
+                                    <a class="nav-link <?= strpos($current_uri, 'users') !== false ? 'active' : '' ?>" href="<?= base_url('users'); ?>">Data User</a>
+                                    <a class="nav-link <?= strpos($current_uri, 'pelanggan') !== false ? 'active' : '' ?>" href="<?= base_url('pelanggan'); ?>">Data Pelanggan</a>
+                                    <a class="nav-link <?= strpos($current_uri, 'pembayaran') !== false ? 'active' : '' ?>" href="<?= base_url('pembayaran'); ?>">Data Pembayaran</a>
+                                    <a class="nav-link <?= strpos($current_uri, 'detailtransaksi') !== false ? 'active' : '' ?>" href="<?= base_url('detailtransaksi'); ?>">Data Transaksi</a>
                                 </nav>
                             </div>
-                            <a class="nav-link" href="<?= base_url('laporan'); ?>">
+                            <a class="nav-link <?= strpos($current_uri, 'laporan') !== false ? 'active' : '' ?>" href="<?= base_url('laporan'); ?>">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-fw fa-chart-line"></i></div>
                                 Laporan
                             </a>
