@@ -16,7 +16,7 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js "> </script>
 <script src="<?= base_url('assets/jQuery/jquery.mask.min.js') ?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="<?= base_url('vendor/sbadmin/') ?>js/scripts.js"></script>
+<script src="<?= base_url('assets/sbadmin/') ?>js/scripts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>

@@ -8,7 +8,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title><?= $tittle; ?> - Polman</title>
-    <link href="<?= base_url('vendor/sbadmin/') ?>css/styles.css" rel="stylesheet" />
+    <link href="<?= base_url('assets/sbadmin/') ?>css/styles.css" rel="stylesheet" />
     <!-- Datatables -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">

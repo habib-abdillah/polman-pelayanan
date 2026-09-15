@@ -1,22 +1,23 @@
-# 🛠️ Sistem Informasi Kasir & Pelayanan Polman Bandung
+# Sistem Informasi Kasir & Pelayanan Polman Bandung
 
 Aplikasi web kasir dan manajemen pelayanan bengkel/jasa, dibangun menggunakan **CodeIgniter 3**, **Illuminate Eloquent ORM**, dan dilengkapi sistem **Database Migration & Seeder CLI** custom ala Laravel (`php migrate`).
 
 ---
 
-## 📌 Daftar Isi
+## Daftar Isi
 
-- [Fitur Utama](#-fitur-utama)
-- [Teknologi & Stack](#-teknologi--stack)
-- [Struktur Database & Sistem Migrasi](#-struktur-database--sistem-migrasi)
-- [Petunjuk Instalasi (Docker)](#-petunjuk-instalasi-docker)
-- [Database Migration & Seeder CLI](#-database-migration--seeder-cli)
-- [Akun Pengguna Default](#-akun-pengguna-default)
-- [Struktur Folder](#-struktur-folder)
+- [Fitur Utama](#fitur-utama)
+- [Teknologi & Stack](#teknologi--stack)
+- [Persyaratan Sistem (Prerequisites)](#persyaratan-sistem-prerequisites)
+- [Panduan Setup & Instalasi](#panduan-setup--instalasi)
+- [Perintah Operasional Harian](#perintah-operasional-harian)
+- [Database Migration & Seeder CLI](#database-migration--seeder-cli)
+- [Akun Pengguna Default](#akun-pengguna-default)
+- [Struktur Folder](#struktur-folder)
 
 ---
 
-## 🚀 Fitur Utama
+## Fitur Utama
 
 - **Dashboard Interaktif**: Statistik penjualan, grafik transaksi, dan ringkasan aktivitas terkini.
 - **Sistem Transaksi Kasir (POS)**:
@@ -32,26 +33,35 @@ Aplikasi web kasir dan manajemen pelayanan bengkel/jasa, dibangun menggunakan **
   - **Admin**: Akses penuh ke seluruh fitur master data, pengguna, log aktivitas, dan laporan.
   - **Operator**: Akses fokus pada transaksi kasir dan riwayat transaksi.
 - **Log Aktivitas Pengguna (Audit Trail)**: Pencatatan otomatis aksi pengguna pada tabel `sys_track`.
-- **Ekspor Laporan**: Dukungan ekspor data tabel ke format Excel, PDF, serta Column Visibility toggle.
+- **Ekspor Laporan**: Dukungan ekspor data tabel ke format Excel, PDF, serta pengaturan kolom tabel (Column Visibility).
 
 ---
 
-## 💻 Teknologi & Stack
+## Teknologi & Stack
 
 | Komponen | Teknologi |
 | :--- | :--- |
 | **Framework Backend** | CodeIgniter 3.1.x |
 | **ORM / Data Access** | Illuminate Database (Eloquent ORM) |
-| **PHP Version** | PHP 7.4-Apache |
+| **PHP Runtime** | PHP 7.4-Apache |
 | **Database** | MariaDB 10.4 / MySQL |
 | **Styling & UI** | Bootstrap 5, FontAwesome 6, Datatables Responsive, ApexCharts/Chart.js |
 | **Containerization** | Docker & Docker Compose |
 
 ---
 
-## 🐳 Petunjuk Instalasi (Docker)
+## Persyaratan Sistem (Prerequisites)
 
-Aplikasi telah disiapkan menggunakan Docker Compose agar mudah dijalankan di environment mana pun tanpa perlu install web server manual.
+Sebelum memulai setup, pastikan perangkat Anda telah terinstall:
+- **Git** (versi 2.x ke atas)
+- **Docker Engine** (versi 20.10 ke atas) dan **Docker Compose** (v2)
+- *Catatan untuk Windows/WSL2*: Pastikan Docker Desktop berjalan dan integrasi WSL2 aktif.
+
+---
+
+## Panduan Setup & Instalasi
+
+Ikuti langkah-langkah berikut untuk menjalankan aplikasi dari awal (fresh clone):
 
 ### 1. Clone Repositori
 ```bash
@@ -59,126 +69,142 @@ git clone <repository-url>
 cd polman-pelayanan
 ```
 
-### 2. Konfigurasi Environment
-Salin file konfigurasi `.env.example` ke `.env`:
+### 2. Konfigurasi Environment (.env)
+Salin template konfigurasi `.env.example` menjadi file `.env`:
 ```bash
 cp .env.example .env
 ```
-Default konfigurasi `.env`:
-- **Port Aplikasi**: `http://localhost:8079`
-- **Port Database Eksternal**: `3307` (bisa diakses via DBeaver / TablePlus / HeidiSQL)
-- **Database**: `polman_pelayanan` (user: `root`, pass: `root`)
+Konfigurasi default pada `.env`:
+- Port Web Aplikasi: `8079`
+- Port Database Eksternal: `3307` (bisa dihubungkan via DBeaver, TablePlus, atau HeidiSQL)
+- Nama Database: `polman_pelayanan`
+- Kredensial Database: user `root`, password `root`
 
-### 3. Jalankan Container
+### 3. Build dan Jalankan Container Docker
+Jalankan container menggunakan Docker Compose:
 ```bash
 docker compose up -d --build
 ```
 
-### 4. Setup Database & Jalankan Migrasi + Seeder
-Jalankan migrasi dan seeder otomatis melalui container:
+> **Catatan Dependency (Composer)**:
+> Folder `vendor/` tidak disimpan di Git (`.gitignore`) demi menjaga kebersihan repositori. Saat container pertama kali dinyalakan, Docker entrypoint secara otomatis akan menjalankan `composer install --no-dev` berdasarkan `composer.lock`. Versi package dijamin 100% identik dan konsisten di setiap clone tanpa risiko perbedaan versi dependency.
+
+### 4. Jalankan Database Migration & Seeder
+Setelah container berhasil running, eksekusi migrasi database dan pengisian data awal (seeder):
 ```bash
 docker exec polman-pelayanan-app php migrate fresh --seed
 ```
 
-Aplikasi sekarang siap digunakan di peramban: **[http://localhost:8079](http://localhost:8079)**.
+### 5. Akses Aplikasi
+Buka peramban (browser) dan akses alamat berikut:
+```text
+http://localhost:8079
+```
 
 ---
 
-## ⚡ Database Migration & Seeder CLI
+## Perintah Operasional Harian
 
-Project ini dilengkapi dengan custom command-line interface `migrate` (setara dengan `php artisan migrate` di Laravel).
+Berikut beberapa perintah umum untuk mengelola container aplikasi:
 
-Untuk menjalankan perintah, gunakan via container aplikasi:
+- **Melihat status container**:
+  ```bash
+  docker compose ps
+  ```
+
+- **Melihat log container secara realtime**:
+  ```bash
+  docker compose logs -f app
+  ```
+
+- **Menghentikan container**:
+  ```bash
+  docker compose stop
+  ```
+
+- **Menjalankan kembali container**:
+  ```bash
+  docker compose start
+  ```
+
+- **Mematikan dan membersihkan container**:
+  ```bash
+  docker compose down
+  ```
+
+- **Reset total database dan container (hapus volume database)**:
+  ```bash
+  docker compose down -v
+  docker compose up -d
+  docker exec polman-pelayanan-app php migrate fresh --seed
+  ```
+
+---
+
+## Database Migration & Seeder CLI
+
+Aplikasi ini menggunakan CLI migrasi kustom `php migrate` (mengadopsi konsep `php artisan migrate` dari Laravel).
+
+Jalankan perintah ini melalui container aplikasi:
 ```bash
-docker exec polman-pelayanan-app php migrate <command>
+docker exec polman-pelayanan-app php migrate <perintah>
 ```
-*(atau langsung `php migrate <command>` jika menjalankan PHP di host lokal)*
 
 ### Daftar Perintah Migrasi
 
-| Perintah | Keterangan |
+| Perintah | Fungsi |
 | :--- | :--- |
-| `php migrate` | Menjalankan seluruh file migration yang belum dieksekusi. |
+| `php migrate` | Menjalankan file migrasi baru yang belum dieksekusi. |
 | `php migrate rollback` | Mengembalikan (rollback) batch migrasi terakhir. |
-| `php migrate reset` | Me-rollback seluruh migrasi yang pernah dijalankan. |
-| `php migrate refresh` | Melakukan reset total lalu menjalankan kembali semua migrasi. |
-| `php migrate fresh` | Drop semua tabel yang ada lalu mengeksekusi ulang migrasi dari awal. |
-| `php migrate fresh --seed` | Drop tabel, jalankan migrasi, dan langsung isi data awal (seeder). |
-| `php migrate status` | Melihat daftar status migrasi (Ran / Pending) dan nomor batch-nya. |
+| `php migrate reset` | Me-rollback semua migrasi yang pernah dijalankan. |
+| `php migrate refresh` | Reset total lalu menjalankan kembali seluruh migrasi. |
+| `php migrate fresh` | Drop seluruh tabel di database lalu jalankan migrasi dari awal. |
+| `php migrate fresh --seed` | Drop tabel, migrasi ulang, dan otomatis isi data master/seeder. |
+| `php migrate status` | Menampilkan tabel status migrasi (Ran / Pending) serta batch-nya. |
 | `php migrate seed` | Menjalankan master seeder (`DatabaseSeeder`). |
-| `php migrate seed --class=X` | Menjalankan file seeder spesifik (contoh: `--class=PelayananSeeder`). |
-| `php migrate make:migration <name>` | Membuat template file migrasi baru di `database/migrations/`. |
-| `php migrate make:seeder <name>` | Membuat template file seeder baru di `database/seeders/`. |
-
-### Contoh Struktur Migration (`database/migrations/`):
-```php
-use MigrateCore\Migration;
-
-class CreateMsPelayananTable extends Migration
-{
-    public function up(): void
-    {
-        $this->db->exec("
-            CREATE TABLE IF NOT EXISTS `ms_pelayanan` (
-                `id`             varchar(100) NOT NULL PRIMARY KEY,
-                `kode_pelayanan` varchar(100) NOT NULL,
-                `nama_pelayanan` varchar(100) NOT NULL,
-                `harga`          int(100) NOT NULL,
-                `keterangan`     varchar(100) NOT NULL,
-                `status_aktif`   int(11) NOT NULL DEFAULT 1,
-                `user_id_buat`   varchar(100) NOT NULL,
-                `user_id_ubah`   varchar(100) NOT NULL,
-                `created_at`     date NOT NULL,
-                `updated_at`     date NOT NULL
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-        ");
-    }
-
-    public function down(): void
-    {
-        $this->db->exec("DROP TABLE IF EXISTS `ms_pelayanan`;");
-    }
-}
-```
+| `php migrate seed --class=X` | Menjalankan seeder tertentu (contoh: `--class=PelayananSeeder`). |
+| `php migrate make:migration <nama>` | Membuat file migrasi baru di `database/migrations/`. |
+| `php migrate make:seeder <nama>` | Membuat file seeder baru di `database/seeders/`. |
 
 ---
 
-## 🔑 Akun Pengguna Default
+## Akun Pengguna Default
 
-Setelah menjalankan seeder (`php migrate seed` atau `php migrate fresh --seed`), akun berikut dapat langsung digunakan untuk login:
+Setelah menjalankan seeder (`php migrate seed` atau `php migrate fresh --seed`), gunakan akun berikut untuk masuk ke sistem:
 
-| Role | Username | Password | Keterangan |
+| Role | Username | Password | Hak Akses |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | `admin` | `admin123` | Akses penuh (Master data, user, transaksi, reports, audit log) |
-| **Operator** | `operator` | `operator123` | Akses operasional kasir & riwayat transaksi |
+| **Administrator** | `admin` | `admin123` | Akses penuh (Master data, user management, transaksi, laporan, audit log) |
+| **Operator** | `operator` | `operator123` | Akses operasional transaksi kasir dan riwayat transaksi |
 
-*(Catatan: Password di-hash menggunakan standar bcrypt `password_hash()`)*
+*Catatan: Password dienkripsi dengan standar hash bcrypt `password_hash()`.*
 
 ---
 
-## 📁 Struktur Folder Proyek
+## Struktur Folder
 
 ```text
 polman-pelayanan/
 ├── application/
-│   ├── config/              # Konfigurasi CI3 & Eloquent
-│   ├── controllers/         # Controller aplikasi (Auth, Dashboard, Transaksi, dll)
-│   ├── models/              # Eloquent Models (M_users, M_pelayanan, dll)
-│   └── views/               # Blade-style / PHP Views & Komponen UI
-├── assets/                  # File CSS, JS, Vendor, dan Icons
+│   ├── config/              # Konfigurasi CodeIgniter & Eloquent ORM
+│   ├── controllers/         # Controller (Auth, Dashboard, Transaksi, Form, dll)
+│   ├── models/              # Model Eloquent (M_users, M_pelayanan, dll)
+│   └── views/               # Template dan tampilan view aplikasi
+├── assets/                  # CSS, JS, Gambar, dan Vendor asset frontend (SBAdmin)
 ├── database/
 │   ├── migrations/          # File definisi skema tabel database
-│   └── seeders/             # File pengisian data awal (dummy/master)
+│   └── seeders/             # File seeder pengisian data awal
 ├── MigrateCore/             # Engine custom Migration & Seeder CLI
-├── docker-compose.yml       # Konfigurasi multi-container Docker
-├── Dockerfile               # Konfigurasi image PHP 7.4 Apache
-├── migrate                  # Script runner CLI executable
+├── docker-compose.yml       # Konfigurasi orkestrasi multi-container
+├── Dockerfile               # Konfigurasi container PHP 7.4 Apache & Composer
+├── docker-entrypoint.sh     # Script otomatis instalasi dependency saat startup
+├── migrate                  # CLI runner executable
 ├── .env.example             # Template konfigurasi environment
-└── README.md                # Dokumentasi proyek
+└── readme.md                # Dokumentasi proyek
 ```
 
 ---
 
-## 📄 Lisensi
+## Lisensi
 
 Proyek ini dikembangkan untuk kebutuhan operasional kasir & pelayanan Politeknik Manufaktur Negeri Bandung (Polman Bandung).
